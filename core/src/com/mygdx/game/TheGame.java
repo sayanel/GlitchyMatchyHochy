@@ -19,6 +19,7 @@ public class TheGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 50, 1);
+		//ceci est sur la branch dev_test
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
