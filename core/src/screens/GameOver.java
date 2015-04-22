@@ -26,7 +26,7 @@ public class GameOver implements Screen{
         Gdx.gl.glClearColor(1, 0.2f, 0.4f, 1); // Notre jolie couleur rose :p
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         Gdx.app.log("GameOver", "Dans le GameOver Rose"); // On affiche dans la log que l'on est bien dans notre menu
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.justTouched()){
             game.setScreen(new Menu(game));
         }
     }

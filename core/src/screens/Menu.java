@@ -27,7 +27,7 @@ public class Menu implements Screen{
         Gdx.gl.glClearColor(1, 1, 1, 1); // Notre jolie couleur rose :p
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         Gdx.app.log("Menu", "Dans le Menu Jaune"); // On affiche dans la log que l'on est bien dans notre menu
-        if(Gdx.input.isKeyPressed(Keys.ENTER)){
+        if(Gdx.input.isKeyPressed(Keys.ENTER) || Gdx.input.justTouched()){
             this.game.setScreen(new GameOver(this.game));
         }
 
