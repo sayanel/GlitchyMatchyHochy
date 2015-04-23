@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fatman.screen.MainMenuScreen;
 
-
+// Salut maxou
 public class Drop extends Game {
 
     public SpriteBatch batch;
