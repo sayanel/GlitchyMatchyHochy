@@ -10,11 +10,6 @@ public class TheGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-<<<<<<< Updated upstream:core/src/com/fatman/screen/TheGame.java
-=======
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
->>>>>>> Stashed changes:core/src/com/mygdx/game/TheGame.java
 
 	}
 
