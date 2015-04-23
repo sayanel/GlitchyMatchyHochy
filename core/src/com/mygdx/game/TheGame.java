@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TheGame extends ApplicationAdapter {
-	//merge
+
 	@Override
 	public void create () {
 
