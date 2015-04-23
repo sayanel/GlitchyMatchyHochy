@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.fatman.screen;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
