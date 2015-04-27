@@ -42,4 +42,12 @@ public class TileSet {
             throw  new IndexOutOfBoundsException("***** ERROR : tile requested out of bounds *****");
         }
     }
+
+    public int getWidth(){
+        return m_tile_width;
+    }
+
+    public int getHeight(){
+        return m_tile_heigth;
+    }
 }

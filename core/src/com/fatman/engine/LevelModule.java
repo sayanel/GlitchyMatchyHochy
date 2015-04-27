@@ -35,21 +35,25 @@ public class LevelModule implements Drawable{
 
     public LevelModule(LevelModuleDrawer levelModuleDrawer){
         setDrawer(levelModuleDrawer);
+        notifyChanges();
     }
 
     public LevelModule(Pattern scene_pattern, Pattern object_pattern, Drawer levelModuleDrawer){
         m_scene_pattern = scene_pattern;
         m_object_pattern = object_pattern;
         setDrawer(levelModuleDrawer);
+        notifyChanges();
     }
 
     public void setScenePattern(Pattern scenePattern){
         m_scene_pattern = scenePattern;
         m_width = ((double) m_scene_pattern.getWidth());
+        notifyChanges();
     }
 
     public void setObjectPattern(Pattern objectPattern){
         m_object_pattern = objectPattern;
+        notifyChanges();
     }
 
     public void genRandomObjects(){
@@ -58,6 +62,7 @@ public class LevelModule implements Drawable{
 
     public void setPosition(double position){
         m_position = position;
+        notifyChanges();
     }
 
     public double getPosition(){
@@ -78,6 +83,15 @@ public class LevelModule implements Drawable{
         System.out.println("- module position : " + m_position);
     }
 
+    public Pattern getScenePattern(){
+        return m_scene_pattern;
+    }
+
+    public Pattern getObjectPattern(){
+        return m_object_pattern;
+    }
+
+
     @Override
     public void setDrawer(Drawer d) {
         m_drawer = d;
@@ -92,4 +106,6 @@ public class LevelModule implements Drawable{
     public void notifyChanges() {
         m_drawer.update(this);
     }
+
+
 }

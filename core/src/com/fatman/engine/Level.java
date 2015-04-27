@@ -165,6 +165,7 @@ public class Level implements Drawable{
         LevelModule l = genLevelModule(position);
         addAtEnd(l);
         removeFirst();
+        l.notifyChanges();
     }
 
     public ArrayList<LevelModule> getLevelModules(){

@@ -110,6 +110,10 @@ public class Pattern {
         return PATTERN_WIDTH;
     }
 
+    public int[][] getData(){
+        return m_pattern;
+    }
+
 
 
 

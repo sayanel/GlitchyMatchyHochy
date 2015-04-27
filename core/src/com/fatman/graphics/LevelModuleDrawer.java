@@ -9,33 +9,56 @@
 package com.fatman.graphics;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fatman.engine.Level;
 import com.fatman.engine.LevelModule;
 
 public class LevelModuleDrawer implements Drawer{
 
-    LevelModule m_level_module;
-    TileSet m_tile_set;
-    SpriteBatch m_batch;
+    private TileSet m_tile_set;
+
+    private SpriteBatch m_batch;
+
+    private double m_position;
+    private int[][] m_scene_data;
+    private int[][] m_object_data;
+    private double m_width;
+
+
 
     //TO DO :
     //- ajouter les attributs qui vont régir le dessin
 
-    public LevelModuleDrawer(LevelModule levelModule, TileSet tileSet, SpriteBatch batch){
-        m_level_module = levelModule;
-        levelModule.setDrawer(this);
-
+    public LevelModuleDrawer(TileSet tileSet, SpriteBatch batch){
         m_tile_set = tileSet;
         m_batch = batch;
+        m_scene_data = null;
+        m_object_data = null;
     }
 
     @Override
     public void draw() {
-
+        m_batch.begin();
+            for(int i = 0; i < m_scene_data.length; ++i){
+                for(int j = 0; j < m_scene_data[0].length; ++j){
+                    float x = (float)(m_position +  j * m_tile_set.getWidth());
+                    float y = (float)(4*64) - (float)(i * m_tile_set.getHeight());
+                    m_tile_set.getTile(m_scene_data[i][j]).setPosition(x, y);
+                    m_tile_set.getTile(m_scene_data[i][j]).draw(m_batch);
+                }
+            }
+        m_batch.end();
     }
 
     @Override
     public void update(Drawable drawable) {
+       update(((LevelModule) drawable));
+    }
 
+    private void update(LevelModule levelModule){
+        m_position = levelModule.getPosition();
+        m_scene_data = levelModule.getScenePattern().getData();
+        m_object_data = levelModule.getObjectPattern().getData();
+        m_width = levelModule.getWidth();
     }
 
 }
