@@ -11,27 +11,33 @@ package com.fatman.engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.fatman.graphics.Drawable;
+import com.fatman.graphics.Drawer;
+import com.fatman.graphics.LevelDrawer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 //Level
 
-public class Level{
+public class Level implements Drawable{
 
     //============================ ATTRIBUTES ============================//
 
-    private Array<LevelModule> m_level_modules;
+    private ArrayList<LevelModule> m_level_modules;
     private Array<Pattern> m_level_scene_patterns;
     private Array<Pattern> m_level_object_patterns;
 
     private String m_pattern_path;
 
+    private Drawer m_drawer;
+
     //============================= METHODS ==============================//
 
-    public Level(String pattern_path){
-        m_level_modules = new Array<LevelModule>();
+    public Level(String pattern_path, ArrayList<LevelModule> levelModules, LevelDrawer levelDrawer){
+        m_level_modules = levelModules;
         m_level_scene_patterns = new Array<Pattern>();
         m_level_object_patterns = new Array<Pattern>();
 
@@ -45,14 +51,8 @@ public class Level{
             e.printStackTrace();
         }
 
-        addAtEnd(genLevelModule());
-        addAtEnd(genLevelModule(m_level_modules.get(0).getWidth()));
-        addAtEnd(genLevelModule(m_level_modules.get(1).getPosition() + m_level_modules.get(1).getWidth()));
+        setDrawer(levelDrawer);
 
-    }
-
-    public Level(){
-        this("patterns/");
     }
 
     public void storeScenePatterns() throws IOException{
@@ -106,7 +106,7 @@ public class Level{
     }
 
     public void removeFirst(){
-        m_level_modules.removeIndex(0);
+        m_level_modules.remove(0);
     }
 
     public void print(){
@@ -132,18 +132,16 @@ public class Level{
 
     public LevelModule genLevelModule(double position){
 
-        LevelModule levelModule = new LevelModule();
-
         //trouver aléatoirement un pattern dans l'array de patterns
         int arraySize = m_level_scene_patterns.size;
         Random r = new Random();
         int randomIndex = r.nextInt(arraySize);
-        levelModule.setScenePattern(m_level_scene_patterns.get(randomIndex));
 
         //trouver aléatoirement un pattern dans l'array de patterns
         arraySize = m_level_object_patterns.size;
-        randomIndex = r.nextInt(arraySize);
-        levelModule.setObjectPattern(m_level_object_patterns.get(randomIndex));
+        int randomIndex2 = r.nextInt(arraySize);
+
+        LevelModule levelModule = new LevelModule(m_level_scene_patterns.get(randomIndex), m_level_object_patterns.get(randomIndex2), first().getDrawer());
 
         levelModule.setPosition(position);
 
@@ -154,15 +152,38 @@ public class Level{
         return genLevelModule(0);
     }
 
+    public LevelModule peek(){
+        return m_level_modules.get(m_level_modules.size() - 1);
+    }
+
+    public LevelModule first(){
+        return m_level_modules.get(0);
+    }
+
     public void updateList(){
-        double position = m_level_modules.peek().getPosition() + m_level_modules.peek().getWidth();
+        double position = peek().getPosition() + peek().getWidth();
         LevelModule l = genLevelModule(position);
         addAtEnd(l);
         removeFirst();
     }
 
+    public ArrayList<LevelModule> getLevelModules(){
+        return m_level_modules;
+    }
 
 
+    @Override
+    public void setDrawer(Drawer d) {
+        m_drawer = d;
+    }
 
+    @Override
+    public Drawer getDrawer() {
+        return m_drawer;
+    }
 
+    @Override
+    public void notifyChanges() {
+        m_drawer.update(this);
+    }
 }

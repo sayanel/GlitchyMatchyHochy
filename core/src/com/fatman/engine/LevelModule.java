@@ -1,5 +1,4 @@
 //======================================
-
 // Company : GlitchyMatchyHochy
 // Project : GlitchyMatchyHochy
 // Author :  Mehdi-Antoine 
@@ -8,7 +7,13 @@
 
 package com.fatman.engine;
 
-public class LevelModule {
+import com.fatman.graphics.Drawable;
+import com.fatman.graphics.Drawer;
+import com.fatman.graphics.LevelModuleDrawer;
+
+import java.util.ArrayList;
+
+public class LevelModule implements Drawable{
 
 
     //============================ ATTRIBUTES ============================//
@@ -24,10 +29,18 @@ public class LevelModule {
     private double m_position;
     private double m_width;
 
+    private Drawer m_drawer;
+
     //============================= METHODS ==============================//
 
-    public LevelModule(){
+    public LevelModule(LevelModuleDrawer levelModuleDrawer){
+        setDrawer(levelModuleDrawer);
+    }
 
+    public LevelModule(Pattern scene_pattern, Pattern object_pattern, Drawer levelModuleDrawer){
+        m_scene_pattern = scene_pattern;
+        m_object_pattern = object_pattern;
+        setDrawer(levelModuleDrawer);
     }
 
     public void setScenePattern(Pattern scenePattern){
@@ -63,5 +76,20 @@ public class LevelModule {
         m_object_pattern.print();
         System.out.println("- module width : " + m_width);
         System.out.println("- module position : " + m_position);
+    }
+
+    @Override
+    public void setDrawer(Drawer d) {
+        m_drawer = d;
+    }
+
+    @Override
+    public Drawer getDrawer() {
+        return m_drawer;
+    }
+
+    @Override
+    public void notifyChanges() {
+        m_drawer.update(this);
     }
 }
