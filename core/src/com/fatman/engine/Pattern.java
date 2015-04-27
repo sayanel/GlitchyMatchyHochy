@@ -63,16 +63,14 @@ public class Pattern {
 
         }
         catch (IOException e) {
-            IOException f = new IOException("***** ERROR : error while reading pattern file at : " + filePath + " *****");
-            throw f;
+            throw new IOException("***** ERROR : error while reading pattern file at : " + filePath + " *****");
         }
     }
 
     public void writePattern(String filePath) throws IOException{
 
         if(PATTERN_WIDTH == 0){
-            IOException e = new IOException("***** ERROR : empty pattern! *****");
-            throw e;
+            throw new IOException("***** ERROR : empty pattern! *****");
         }
 
         FileHandle file = Gdx.files.local(filePath);
@@ -93,8 +91,8 @@ public class Pattern {
             output.close();
         }
         catch (IOException e) {
-            IOException f = new IOException("***** ERROR : unable to write pattern at : " + filePath + " *****");
-            throw f;
+            throw new IOException("***** ERROR : unable to write pattern at : " + filePath + " *****");
+
         }
     }
 
