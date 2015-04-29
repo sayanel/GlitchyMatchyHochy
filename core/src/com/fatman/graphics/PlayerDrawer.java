@@ -63,14 +63,14 @@ public class PlayerDrawer implements Drawer {
 
 
     public void drawJump(){
-
+        System.out.println("DRAW JUMP");
         m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x, m_position.y);
 
     }
 
     public void drawPlayerRun(){
 
-
+        System.out.println("DRAW RUN");
         m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x, m_position.y);
 
     }
@@ -79,15 +79,13 @@ public class PlayerDrawer implements Drawer {
     //DRAWER METHODS
     public void draw() {
         m_elapsedTime += Gdx.graphics.getDeltaTime();
-        System.out.println(m_currentTimeJump);
+
 
         if(m_state == Player.State.RUNNING){
             drawPlayerRun();
         }
 
         if(m_state == Player.State.JUMPING) {
-
-
             drawJump();
         }
 

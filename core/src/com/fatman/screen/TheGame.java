@@ -2,16 +2,14 @@ package com.fatman.screen;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fatman.controller.PlayerController;
 import com.fatman.engine.Level;
 import com.fatman.engine.LevelModule;
-import com.fatman.engine.Pattern;
 import com.fatman.engine.Player;
 import com.fatman.graphics.LevelDrawer;
 import com.fatman.graphics.LevelModuleDrawer;
@@ -24,6 +22,7 @@ import java.util.ArrayList;
 
 public class TheGame extends ApplicationAdapter {
 
+	///////////////////////////BATCH
 	private SpriteBatch m_batch;
 
 	private Level m_level;
@@ -36,6 +35,22 @@ public class TheGame extends ApplicationAdapter {
 	private double m_player_position;
 
 	private double m_alpha;
+
+	///////////////////////////PLAYER
+	private Player m_player;
+	private PlayerController m_playerController;
+	private PlayerDrawer m_playerDrawer;
+	private TileSet m_tileSetPlayer;
+	private Texture m_texturePlayer;
+
+	////////////////////////CAMERA
+	private static final float CAMERA_WIDTH = 800f;
+	private static final float CAMERA_HEIGHT = 480f;
+
+	private OrthographicCamera m_camera;
+
+
+
 
 	@Override
 	public void create () {
@@ -63,6 +78,19 @@ public class TheGame extends ApplicationAdapter {
 
 		m_alpha = 0.01;
 
+
+		//player
+		m_texturePlayer = new Texture(Gdx.files.internal("tileset/larry_run.png"));
+		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer);
+		m_player = new Player(m_playerDrawer);
+		m_playerController = new PlayerController(m_player);
+		m_player.notifyChanges();
+
+		//camera
+		this.m_camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
+		this.m_camera.setToOrtho(false,CAMERA_WIDTH,CAMERA_HEIGHT);
+		this.m_camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
+
 	}
 
 	@Override
@@ -72,21 +100,41 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		moveCamera(m_player.getPosition().x, CAMERA_HEIGHT / 2);
+
 		BitmapFont bitmapFont = new BitmapFont();
 
 		m_batch.begin();
-		m_level_drawer.draw();
-		bitmapFont.draw(m_batch, "PlayerPosition : " + Double.toString(m_player_position), 150, 350);
+
+			///////////////////////////////LEVEL
+			m_level_drawer.draw();
+			bitmapFont.draw(m_batch, "PlayerPosition : " + Double.toString(m_player_position), 150, 350);
+
+			///////////////////////////////PLAYER
+			m_playerController.eventHandler();
+			m_player.run();
+			m_player.update(m_playerController);
+			m_playerDrawer.draw();
+
 		m_batch.end();
 
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			m_player_position += m_alpha;
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-			m_alpha *= 2;
-		}
+
 
 		m_level.checkPlayerPosition(m_player_position);
 
 	}
+
+	@Override
+	public void dispose(){
+		m_texturePlayer.dispose();
+	}
+
+	public void moveCamera(float x, float y){
+		if ((m_player.getPosition().x > CAMERA_WIDTH / 2)) {
+			m_camera.position.set(x, y, 0);
+			m_camera.update();
+		}
+	}
+
+
 }

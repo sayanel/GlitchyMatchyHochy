@@ -93,6 +93,9 @@ public class Player implements Drawable, Controllable {
 
     //******************** * FUNCTIONS * ********************//
     public void run(){
+        if(getState() != State.RUNNING && m_currentTimeJump == 120) {
+            setState(State.RUNNING);
+        }
 
         m_position.x = m_position.x + 1;
     }
@@ -107,9 +110,9 @@ public class Player implements Drawable, Controllable {
     }
 
     public void jump(){
+
         if(getState() != State.JUMPING) {
             setState(State.JUMPING);
-
         }
 
 
