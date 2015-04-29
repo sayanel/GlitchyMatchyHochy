@@ -3,11 +3,13 @@ package com.fatman.engine;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.fatman.controller.Controllable;
+import com.fatman.controller.Controller;
 import com.fatman.graphics.Drawable;
 import com.fatman.graphics.Drawer;
 
 
-public class Player implements Drawable {
+public class Player implements Drawable, Controllable {
 
 
     public enum State {
@@ -66,16 +68,23 @@ public class Player implements Drawable {
     public State getState(){return m_state;}
 
     //******************** * SETTERS * ********************//
+    public void setState(State new_state){
+        this.m_state = new_state;
+        notifyChanges();
+    }
 
 
-
-    //******************** * FUNCTION * ********************//
+    //******************** * FUNCTIONS * ********************//
     private void run(){}
     private void hit(){}
     private void jump(){}
     private void enlarge(){}
     private void slim(){}
     private void die(){}
+
+    public void increaseX(){
+        m_position.x = m_position.x + 1;
+    }
 
     //DRAWABLE METHODS
     @Override
@@ -93,9 +102,15 @@ public class Player implements Drawable {
         m_drawer.update(this);
     }
 
-    public void increaseX(){
-        m_position.x = m_position.x + 1;
+
+
+
+    //CONTROLLABLE METHODS
+    public void update(Controller controller){
+        //player modifications setters
+        //this.notifyChanges();
     }
+
 
 
 

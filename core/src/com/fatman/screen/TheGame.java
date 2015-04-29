@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fatman.controller.PlayerController;
 import com.fatman.engine.LevelModule;
 import com.fatman.engine.Pattern;
 import com.fatman.engine.Player;
@@ -13,21 +14,25 @@ import com.fatman.graphics.TileSet;
 
 public class TheGame extends ApplicationAdapter {
 
+	////////////////////////////BATCH
 	private SpriteBatch batch;
+
+	/////////////////////////////LEVEL
 	private TileSet tileSet;
 	private Texture texture;
-
+	private LevelModuleDrawer levelModuleDrawer;
 	private Pattern scenePattern;
 	private Pattern objectPattern;
-
 	private LevelModule levelModule;
 
+	///////////////////////////PLAYER
 	private Player m_player;
+	private PlayerController m_playerController;
 	private PlayerDrawer m_playerDrawer;
 	private TileSet m_tileSetPlayer;
 	private Texture m_texturePlayer;
 
-	private LevelModuleDrawer levelModuleDrawer;
+
 
 	@Override
 	public void create () {
@@ -51,6 +56,7 @@ public class TheGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		m_playerDrawer = new PlayerDrawer(m_tileSetPlayer, batch);
 		m_player = new Player(m_playerDrawer);
+		m_playerController = new PlayerController(m_player);
 		m_player.notifyChanges();
 
 
@@ -70,6 +76,8 @@ public class TheGame extends ApplicationAdapter {
 		levelModuleDrawer.draw();
 		m_playerDrawer.draw();
 
-		m_player.increaseX();
+		m_playerController.eventHandler();
+
+		//m_player.increaseX();
 	}
 }
