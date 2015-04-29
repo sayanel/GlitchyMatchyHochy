@@ -63,6 +63,7 @@ public class Player implements Drawable {
     public int getWidth(){return m_width;}
     public int getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
+    public State getState(){return m_state;}
 
     //******************** * SETTERS * ********************//
 
@@ -90,6 +91,10 @@ public class Player implements Drawable {
     @Override
     public void notifyChanges() {
         m_drawer.update(this);
+    }
+
+    public void increaseX(){
+        m_position.x = m_position.x + 1;
     }
 
 

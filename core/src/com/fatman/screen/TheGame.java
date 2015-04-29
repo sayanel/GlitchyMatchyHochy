@@ -69,5 +69,7 @@ public class TheGame extends ApplicationAdapter {
 
 		levelModuleDrawer.draw();
 		m_playerDrawer.draw();
+
+		m_player.increaseX();
 	}
 }
