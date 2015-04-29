@@ -8,7 +8,6 @@
 package com.fatman.graphics;
 
 public interface Drawer {
-
     public void draw();
     public void update(Drawable drawable);
 }

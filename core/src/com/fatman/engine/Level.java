@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-//Level
-
 public class Level implements Drawable{
 
     //============================ ATTRIBUTES ============================//
