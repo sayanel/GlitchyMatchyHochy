@@ -59,7 +59,7 @@ public class MainMenuScreen extends AbstractScreen implements InputProcessor{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
 
-        
+
        /* time += delta;
         if(time < 1.0f){
             return;
