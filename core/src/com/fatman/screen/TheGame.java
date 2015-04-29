@@ -101,6 +101,7 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		moveCamera(m_player.getPosition().x, CAMERA_HEIGHT / 2);
+		m_batch.setProjectionMatrix(m_camera.combined);
 
 		BitmapFont bitmapFont = new BitmapFont();
 
@@ -110,14 +111,15 @@ public class TheGame extends ApplicationAdapter {
 			m_level_drawer.draw();
 			bitmapFont.draw(m_batch, "PlayerPosition : " + Double.toString(m_player_position), 150, 350);
 
+
 			///////////////////////////////PLAYER
+
 			m_playerController.eventHandler();
-			m_player.run();
 			m_player.update(m_playerController);
 			m_playerDrawer.draw();
 
-		m_batch.end();
 
+		m_batch.end();
 
 
 		m_level.checkPlayerPosition(m_player_position);

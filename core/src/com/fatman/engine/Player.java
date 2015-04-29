@@ -30,6 +30,7 @@ public class Player implements Drawable, Controllable {
     private int         m_width;
     private Rectangle   m_bounds = new Rectangle();
     private State       m_state = State.IDLE;
+    boolean m_isJumping = false;
 
     private Drawer m_drawer;
 
@@ -75,13 +76,12 @@ public class Player implements Drawable, Controllable {
     public Vector2 getPosition(){return m_position;}
     public State getState(){return m_state;}
     public int getCurrentTimeJump(){return m_currentTimeJump;}
+    public boolean getIsJumping(){ return m_isJumping;}
 
 
     //******************** * SETTERS * ********************//
     public void setState(State new_state){
-        if(this.m_state != State.JUMPING)
-            this.m_state = new_state;
-
+        this.m_state = new_state;
         System.out.println("setState: " + new_state);
         notifyChanges();
     }
@@ -89,15 +89,11 @@ public class Player implements Drawable, Controllable {
     public void setCurrentTimeJump(int newCurrentTimeJump){
         m_currentTimeJump = newCurrentTimeJump;
     }
-
+    public void setIsJumping(boolean newIsJumping){ m_isJumping = newIsJumping;}
 
     //******************** * FUNCTIONS * ********************//
     public void run(){
-        if(getState() != State.RUNNING && m_currentTimeJump == 120) {
-            setState(State.RUNNING);
-        }
-
-        m_position.x = m_position.x + 1;
+        setState(State.RUNNING);
     }
 
     public void accelerate(){
@@ -110,14 +106,13 @@ public class Player implements Drawable, Controllable {
     }
 
     public void jump(){
-
+        setIsJumping(true);
         if(getState() != State.JUMPING) {
             setState(State.JUMPING);
+            m_currentTimeJump = TIME_JUMP;
         }
 
-
-        m_position.y = m_position.y + 1;
-        notifyChanges();
+        //m_position.y = m_position.y + 1;
     }
 
     public void enlarge(){
@@ -158,13 +153,20 @@ public class Player implements Drawable, Controllable {
     public void update(Controller controller){
         //player modifications setters
 
-        if(m_state == State.JUMPING){
-            if (m_currentTimeJump <= 0) {
-                setState(State.RUNNING);
+        m_position.x = m_position.x + 1; //running
+
+
+        if(m_isJumping){
+
+            if (m_currentTimeJump > 0){
+                m_currentTimeJump--;
+            }
+            else{
+                setIsJumping(false);
                 this.m_currentTimeJump = TIME_JUMP;
+                setState(State.RUNNING);
             }
 
-            m_currentTimeJump--;
         }
 
         this.notifyChanges();

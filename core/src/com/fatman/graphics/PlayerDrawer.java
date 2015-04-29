@@ -31,6 +31,8 @@ public class PlayerDrawer implements Drawer {
 
     private int m_currentTimeJump;
 
+    boolean m_isJumping;
+
     private float m_elapsedTime = 0;
 
 
@@ -63,14 +65,14 @@ public class PlayerDrawer implements Drawer {
 
 
     public void drawJump(){
-        System.out.println("DRAW JUMP");
+        //System.out.println("DRAW JUMP");
         m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x, m_position.y);
 
     }
 
     public void drawPlayerRun(){
 
-        System.out.println("DRAW RUN");
+        //System.out.println("DRAW RUN");
         m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x, m_position.y);
 
     }
@@ -102,5 +104,6 @@ public class PlayerDrawer implements Drawer {
         m_height = player.getHeight();
         m_state = player.getState();
         m_currentTimeJump = player.getCurrentTimeJump();
+        m_isJumping = player.getIsJumping();
     }
 }

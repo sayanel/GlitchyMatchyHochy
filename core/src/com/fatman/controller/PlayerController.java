@@ -59,7 +59,7 @@ public class PlayerController implements Controller{
             m_player.accelerate();
         }
 
-        if(Gdx.input.isTouched()) {
+        if(Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             if (touchPos.y < Gdx.graphics.getHeight() / 2) {
