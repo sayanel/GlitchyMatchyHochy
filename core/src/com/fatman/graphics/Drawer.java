@@ -2,10 +2,13 @@
 // Company : GlitchyMatchyHochy
 // Project : GlitchyMatchyHochy
 // Author :  Mehdi-Antoine 
-// Date :    23/04/2015.
+// Date :    27/04/2015.
 //======================================
 
-package com.fatman.screen;
+package com.fatman.graphics;
 
-public class GameScreen {
+public interface Drawer {
+
+    public void draw();
+    public void update(Drawable drawable);
 }

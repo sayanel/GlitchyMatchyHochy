@@ -1,5 +1,4 @@
 //======================================
-
 // Company : GlitchyMatchyHochy
 // Project : GlitchyMatchyHochy
 // Author :  Mehdi-Antoine 
@@ -8,5 +7,105 @@
 
 package com.fatman.engine;
 
-public class LevelModule {
+import com.fatman.graphics.Drawable;
+import com.fatman.graphics.Drawer;
+import com.fatman.graphics.LevelModuleDrawer;
+
+import java.util.ArrayList;
+
+public class LevelModule implements Drawable{
+
+
+    //============================ ATTRIBUTES ============================//
+
+    //TO ADD :
+    //DecorPattern
+    //ObjectPattern
+    //ObjectRandom
+
+    private Pattern m_scene_pattern;
+    private Pattern m_object_pattern;
+
+    private double m_position;
+    private double m_width;
+
+    private Drawer m_drawer;
+
+    //============================= METHODS ==============================//
+
+    public LevelModule(LevelModuleDrawer levelModuleDrawer){
+        setDrawer(levelModuleDrawer);
+        notifyChanges();
+    }
+
+    public LevelModule(Pattern scene_pattern, Pattern object_pattern, Drawer levelModuleDrawer){
+        m_scene_pattern = scene_pattern;
+        m_object_pattern = object_pattern;
+        setDrawer(levelModuleDrawer);
+        notifyChanges();
+    }
+
+    public void setScenePattern(Pattern scenePattern){
+        m_scene_pattern = scenePattern;
+        m_width = ((double) m_scene_pattern.getWidth());
+        notifyChanges();
+    }
+
+    public void setObjectPattern(Pattern objectPattern){
+        m_object_pattern = objectPattern;
+        notifyChanges();
+    }
+
+    public void genRandomObjects(){
+
+    }
+
+    public void setPosition(double position){
+        m_position = position;
+        notifyChanges();
+    }
+
+    public double getPosition(){
+        return m_position;
+    }
+
+    public double getWidth(){
+        return m_width;
+    }
+
+    public void print(){
+        System.out.println("***** LEVEL_MODULE *****");
+        System.out.println("- scene_pattern : ");
+        m_scene_pattern.print();
+        System.out.println("- object_pattern : ");
+        m_object_pattern.print();
+        System.out.println("- module width : " + m_width);
+        System.out.println("- module position : " + m_position);
+    }
+
+    public Pattern getScenePattern(){
+        return m_scene_pattern;
+    }
+
+    public Pattern getObjectPattern(){
+        return m_object_pattern;
+    }
+
+
+    @Override
+    public void setDrawer(Drawer d) {
+        m_drawer = d;
+    }
+
+    @Override
+    public Drawer getDrawer() {
+        return m_drawer;
+    }
+
+    @Override
+    public void notifyChanges() {
+        m_drawer.update(this);
+    }
+
+
 }
