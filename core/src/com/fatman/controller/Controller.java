@@ -10,6 +10,4 @@ public interface Controller {
     public void setControllable();
     public void notifyChanges();
 
-
-
 }

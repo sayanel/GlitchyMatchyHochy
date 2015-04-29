@@ -1,16 +1,16 @@
 //======================================
 // Company : GlitchyMatchyHochy
 // Project : GlitchyMatchyHochy
-// Author :  Mehdi-Antoine 
+// Author :  Mehdi-Antoine
 // Date :    27/04/2015.
 //======================================
 
 package com.fatman.graphics;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+        import com.badlogic.gdx.graphics.Texture;
+        import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import java.util.ArrayList;
+        import java.util.ArrayList;
 
 public class TileSet {
 

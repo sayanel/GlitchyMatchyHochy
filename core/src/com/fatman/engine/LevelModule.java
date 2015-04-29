@@ -41,6 +41,7 @@ public class LevelModule implements Drawable{
     public LevelModule(Pattern scene_pattern, Pattern object_pattern, Drawer levelModuleDrawer){
         m_scene_pattern = scene_pattern;
         m_object_pattern = object_pattern;
+        m_width = m_scene_pattern.getWidth();
         setDrawer(levelModuleDrawer);
         notifyChanges();
     }
@@ -74,13 +75,15 @@ public class LevelModule implements Drawable{
     }
 
     public void print(){
-        System.out.println("***** LEVEL_MODULE *****");
+
+        System.out.println("******** LEVEL_MODULE *********");
+        System.out.println("- module width : " + m_width);
+        System.out.println("- module position : " + m_position);
         System.out.println("- scene_pattern : ");
         m_scene_pattern.print();
         System.out.println("- object_pattern : ");
         m_object_pattern.print();
-        System.out.println("- module width : " + m_width);
-        System.out.println("- module position : " + m_position);
+
     }
 
     public Pattern getScenePattern(){

@@ -39,8 +39,8 @@ public class LevelModuleDrawer implements Drawer{
 
             for(int i = 0; i < m_scene_data.length; ++i){
                 for(int j = 0; j < m_scene_data[0].length; ++j){
-                    float x = (float)(m_position +  j * m_tile_set.getWidth());
-                    float y = (float)(4*64) - (float)(i * m_tile_set.getHeight());
+                    float x = (float)(m_position * m_tile_set.getWidth() +  j * m_tile_set.getWidth());
+                    float y = (float)(4*m_tile_set.getHeight()) - (float)(i * m_tile_set.getHeight());
                     m_tile_set.getTile(m_scene_data[i][j]).setPosition(x, y);
                     m_tile_set.getTile(m_scene_data[i][j]).draw(m_batch);
                 }

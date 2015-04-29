@@ -97,13 +97,14 @@ public class Pattern {
     }
 
     public void print(){
-        System.out.println("***** PATTERN *****");
+        System.out.println("--------");
         for(int i = 0; i< PATTERN_HEIGHT; ++i){
             for(int j = 0; j < PATTERN_WIDTH; ++j){
                 System.out.print(m_pattern[i][j]);
             }
             System.out.print("\n");
         }
+        System.out.println("--------");
     }
 
     public int getWidth(){
