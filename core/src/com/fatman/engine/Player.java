@@ -17,16 +17,20 @@ public class Player implements Drawable, Controllable {
     }
 
     //******************** * PARAMETERS * ********************//
-    static final float SIZE = 0.5f; // half a unit
-    double      m_weight;
-    int         m_lives;
-    Vector2     m_position;
-    Vector2     m_velocity;
-    Vector2     m_acceleration;
-    int         m_height;
-    int         m_width;
-    Rectangle   m_bounds = new Rectangle();
-    State       m_state = State.IDLE;
+    static final float  SIZE = 0.5f; // half a unit
+    static final int    TIME_JUMP = 120;
+    private int  m_currentTimeJump;
+
+    private double      m_weight;
+    private int         m_lives;
+    private Vector2     m_position;
+    private Vector2     m_velocity;
+    private Vector2     m_acceleration;
+    private int         m_height;
+    private int         m_width;
+    private Rectangle   m_bounds = new Rectangle();
+    private State       m_state = State.IDLE;
+
     private Drawer m_drawer;
 
 
@@ -42,6 +46,8 @@ public class Player implements Drawable, Controllable {
         this.m_width = 60;
         this.m_bounds.height = this.m_height;
         this.m_bounds.width = this.m_width;
+        this.m_currentTimeJump = TIME_JUMP;
+        m_state = State.RUNNING;
     }
 
     public Player(Drawer drawer){
@@ -54,6 +60,8 @@ public class Player implements Drawable, Controllable {
         this.m_width = 60;
         this.m_bounds.height = this.m_height;
         this.m_bounds.width = this.m_width;
+        this.m_currentTimeJump = TIME_JUMP;
+        m_state = State.RUNNING;
 
         setDrawer(drawer);
         notifyChanges();
@@ -66,25 +74,63 @@ public class Player implements Drawable, Controllable {
     public int getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
     public State getState(){return m_state;}
+    public int getCurrentTimeJump(){return m_currentTimeJump;}
+
 
     //******************** * SETTERS * ********************//
     public void setState(State new_state){
-        this.m_state = new_state;
+        if(this.m_state != State.JUMPING)
+            this.m_state = new_state;
+
+        System.out.println("setState: " + new_state);
         notifyChanges();
+    }
+
+    public void setCurrentTimeJump(int newCurrentTimeJump){
+        m_currentTimeJump = newCurrentTimeJump;
     }
 
 
     //******************** * FUNCTIONS * ********************//
-    private void run(){}
-    private void hit(){}
-    private void jump(){}
-    private void enlarge(){}
-    private void slim(){}
-    private void die(){}
+    public void run(){
 
-    public void increaseX(){
         m_position.x = m_position.x + 1;
     }
+
+    public void accelerate(){
+        m_position.x = m_position.x + 3;
+        System.out.println("ACCELERATE \n");
+    }
+
+    public void hit(){
+        System.out.println("HIT \n");
+    }
+
+    public void jump(){
+        if(getState() != State.JUMPING) {
+            setState(State.JUMPING);
+
+        }
+
+
+        m_position.y = m_position.y + 1;
+        notifyChanges();
+    }
+
+    public void enlarge(){
+        System.out.println("ENLARGE \n");
+
+    }
+
+    public void slim(){
+        System.out.println("SLIM \n");
+    }
+
+    public void die(){
+        System.out.println("DIE \n");
+    }
+
+
 
     //DRAWABLE METHODS
     @Override
@@ -108,7 +154,17 @@ public class Player implements Drawable, Controllable {
     //CONTROLLABLE METHODS
     public void update(Controller controller){
         //player modifications setters
-        //this.notifyChanges();
+
+        if(m_state == State.JUMPING){
+            if (m_currentTimeJump <= 0) {
+                setState(State.RUNNING);
+                this.m_currentTimeJump = TIME_JUMP;
+            }
+
+            m_currentTimeJump--;
+        }
+
+        this.notifyChanges();
     }
 
 

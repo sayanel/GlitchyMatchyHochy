@@ -9,7 +9,6 @@
 package com.fatman.graphics;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.fatman.engine.Level;
 import com.fatman.engine.LevelModule;
 
 public class LevelModuleDrawer implements Drawer{
@@ -37,7 +36,7 @@ public class LevelModuleDrawer implements Drawer{
 
     @Override
     public void draw() {
-        m_batch.begin();
+
             for(int i = 0; i < m_scene_data.length; ++i){
                 for(int j = 0; j < m_scene_data[0].length; ++j){
                     float x = (float)(m_position +  j * m_tile_set.getWidth());
@@ -46,7 +45,7 @@ public class LevelModuleDrawer implements Drawer{
                     m_tile_set.getTile(m_scene_data[i][j]).draw(m_batch);
                 }
             }
-        m_batch.end();
+
     }
 
     @Override

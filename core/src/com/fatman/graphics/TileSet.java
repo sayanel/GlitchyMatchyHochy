@@ -27,8 +27,9 @@ public class TileSet {
         m_tile_width = width;
         m_tile_heigth = height;
         m_tile_nb = m_tileset.getWidth()/width * m_tileset.getHeight()/height;
-        for(int i = 0; i < m_tileset.getWidth()/width; ++i){
-            for(int j = 0; j < m_tileset.getHeight()/height; ++j){
+        for(int j = 0; j < m_tileset.getHeight()/height; ++j){
+            for(int i = 0; i < m_tileset.getWidth()/width; ++i){
+
                 m_tiles.add(new Sprite(texture, i * width, j * height, width, height));
             }
         }
