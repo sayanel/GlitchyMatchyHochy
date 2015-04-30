@@ -45,17 +45,17 @@ public class PlayerController implements Controller{
         //get keys input
 
         ///////JUMP
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            m_player.jump();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            if(m_player.getState() != Player.State.JUMPING) m_player.jump();
         }
 
         ///////HIT
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)){
             m_player.hit();
         }
 
         ///////ACCELERATE
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
             m_player.accelerate();
         }
 

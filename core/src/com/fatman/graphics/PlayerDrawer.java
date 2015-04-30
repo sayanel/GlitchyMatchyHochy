@@ -15,7 +15,7 @@ import com.fatman.engine.Player;
 public class PlayerDrawer implements Drawer {
 
     //******************** * PARAMETERS * ********************//
-// yo
+
     private SpriteBatch m_batch;
 
     private Vector2 m_position;
@@ -24,6 +24,7 @@ public class PlayerDrawer implements Drawer {
     private Player.State m_state;
 
     private int m_tile_width;
+    private int m_tile_height;
 
 
 
@@ -33,17 +34,17 @@ public class PlayerDrawer implements Drawer {
 
     private int m_currentTimeJump;
 
-    private boolean m_isJumping;
 
     private float m_elapsedTime = 0;
 
 
 
     //******************** * CONSTRUCTORS * ********************//
-    public PlayerDrawer(SpriteBatch batch, Texture texturePlayer, int tileWidth) {
+    public PlayerDrawer(SpriteBatch batch, Texture texturePlayer, int tileWidth, int tileHeight) {
         m_batch = batch;
 
         setTileWidth(tileWidth);
+        setTileHeight(tileHeight);
 
         TextureRegion[] split = new TextureRegion(texturePlayer).split(113, 113)[0];
         m_playerRunAnimation = new Animation(0.1f, split[0], split[5]);
@@ -56,6 +57,9 @@ public class PlayerDrawer implements Drawer {
     public void setTileWidth(int tileWidth){
         m_tile_width = tileWidth;
     }
+    public void setTileHeight(int tileHeight){
+        m_tile_height = tileHeight;
+    }
 
     //******************** * SETTERS * ********************//
 
@@ -66,14 +70,28 @@ public class PlayerDrawer implements Drawer {
 
     public void drawJump(){
         //System.out.println("DRAW JUMP");
-        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y);
 
+        double jump = 0.0;
+        if(m_currentTimeJump >= 50){ jump = 0.1f; }
+        else if(m_currentTimeJump > 40){ jump = 0.06f; }
+        else if(m_currentTimeJump > 32){ jump = 0.02f; }
+        else if(m_currentTimeJump > 26){ jump = 0.0f; }
+        else if(m_currentTimeJump >= 19){ jump = -0.02f; }
+        else if(m_currentTimeJump >= 10){ jump = -0.06f; }
+        else{ jump = -0.1f;}
+
+        //System.out.println("currentTimeJump: " + m_currentTimeJump + " === jump: " + jump + "  ===    y: " + m_position.y);
+
+        float posJump = m_position.y + (float)jump;
+        m_position.y = posJump;
+        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, posJump * m_tile_height);
     }
 
     public void drawPlayerRun(){
 
         //System.out.println("DRAW RUN");
-        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y);
+
+        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
 
     }
 
@@ -104,6 +122,5 @@ public class PlayerDrawer implements Drawer {
         m_height = player.getHeight();
         m_state = player.getState();
         m_currentTimeJump = player.getCurrentTimeJump();
-        m_isJumping = player.getIsJumping();
     }
 }

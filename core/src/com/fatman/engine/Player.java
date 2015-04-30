@@ -16,11 +16,11 @@ public class Player implements Drawable, Controllable {
         IDLE, WALKING, RUNNING, JUMPING, DYING
     }
 
-    //******************** * PARAMETERS * ********************//
-    static final float  SIZE = 0.5f; // half a unit
-    static final int    TIME_JUMP = 120;
-    private int  m_currentTimeJump;
+    static final int    TIME_JUMP = 60;
 
+    //******************** * PARAMETERS * ********************//
+
+    private int  m_currentTimeJump;
     private double      m_weight;
     private int         m_lives;
     private Vector2     m_position;
@@ -30,8 +30,6 @@ public class Player implements Drawable, Controllable {
     private int         m_width;
     private Rectangle   m_bounds = new Rectangle();
     private State       m_state = State.IDLE;
-    boolean m_isJumping = false;
-
     private Drawer m_drawer;
 
 
@@ -40,8 +38,8 @@ public class Player implements Drawable, Controllable {
     public Player(){
         this.m_weight = 100;
         this.m_lives = 1;
-        this.m_position = new Vector2(0,2);
-        this.m_velocity = new Vector2(1,1);
+        this.m_position = new Vector2(0,1);
+        this.m_velocity = new Vector2(0, (float) 0.05);
         this.m_acceleration = new Vector2(1,1);
         this.m_height = 80;
         this.m_width = 60;
@@ -54,8 +52,8 @@ public class Player implements Drawable, Controllable {
     public Player(Drawer drawer){
         this.m_weight = 100;
         this.m_lives = 1;
-        this.m_position = new Vector2(0,2);
-        this.m_velocity = new Vector2(1,1);
+        this.m_position = new Vector2(0,1);
+        this.m_velocity = new Vector2(0.05f, 0);
         this.m_acceleration = new Vector2(1,1);
         this.m_height = 80;
         this.m_width = 60;
@@ -74,9 +72,9 @@ public class Player implements Drawable, Controllable {
     public int getWidth(){return m_width;}
     public int getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
+    public Vector2 getVelocity(){return m_velocity;}
     public State getState(){return m_state;}
     public int getCurrentTimeJump(){return m_currentTimeJump;}
-    public boolean getIsJumping(){ return m_isJumping;}
 
 
     //******************** * SETTERS * ********************//
@@ -89,7 +87,6 @@ public class Player implements Drawable, Controllable {
     public void setCurrentTimeJump(int newCurrentTimeJump){
         m_currentTimeJump = newCurrentTimeJump;
     }
-    public void setIsJumping(boolean newIsJumping){ m_isJumping = newIsJumping;}
 
     //******************** * FUNCTIONS * ********************//
     public void run(){
@@ -106,13 +103,10 @@ public class Player implements Drawable, Controllable {
     }
 
     public void jump(){
-        setIsJumping(true);
         if(getState() != State.JUMPING) {
             setState(State.JUMPING);
             m_currentTimeJump = TIME_JUMP;
         }
-
-        //m_position.y = m_position.y + 1;
     }
 
     public void enlarge(){
@@ -153,16 +147,15 @@ public class Player implements Drawable, Controllable {
     public void update(Controller controller){
         //player modifications setters
 
-        m_position.x = m_position.x + 0.01f;//running
+        m_position.x +=  getVelocity().x;//running
 
 
-        if(m_isJumping){
+        if(m_state == State.JUMPING){
 
             if (m_currentTimeJump > 0){
                 m_currentTimeJump--;
             }
             else{
-                setIsJumping(false);
                 this.m_currentTimeJump = TIME_JUMP;
                 setState(State.RUNNING);
             }
