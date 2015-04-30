@@ -40,7 +40,7 @@ public class Player implements Drawable, Controllable {
     public Player(){
         this.m_weight = 100;
         this.m_lives = 1;
-        this.m_position = new Vector2(7,2);
+        this.m_position = new Vector2(0,2);
         this.m_velocity = new Vector2(1,1);
         this.m_acceleration = new Vector2(1,1);
         this.m_height = 80;
@@ -54,7 +54,7 @@ public class Player implements Drawable, Controllable {
     public Player(Drawer drawer){
         this.m_weight = 100;
         this.m_lives = 1;
-        this.m_position = new Vector2(7,2);
+        this.m_position = new Vector2(0,2);
         this.m_velocity = new Vector2(1,1);
         this.m_acceleration = new Vector2(1,1);
         this.m_height = 80;

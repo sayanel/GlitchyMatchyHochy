@@ -18,7 +18,7 @@ import com.fatman.graphics.TileSet;
 
 import java.util.ArrayList;
 
-//THE_MERGE
+// Level
 
 public class TheGame extends ApplicationAdapter {
 
@@ -122,7 +122,7 @@ public class TheGame extends ApplicationAdapter {
 		m_batch.end();
 
 
-		m_level.checkPlayerPosition(m_player_position);
+		m_level.checkPlayerPosition(m_player.getPosition().x);
 
 	}
 
