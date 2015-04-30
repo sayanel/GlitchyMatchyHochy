@@ -97,7 +97,7 @@ public class Player implements Drawable, Controllable {
     }
 
     public void accelerate(){
-        m_position.x = m_position.x + 3;
+        m_position.x = m_position.x + 0.02f;
         System.out.println("ACCELERATE \n");
     }
 
@@ -153,7 +153,7 @@ public class Player implements Drawable, Controllable {
     public void update(Controller controller){
         //player modifications setters
 
-        m_position.x = m_position.x + 1; //running
+        m_position.x = m_position.x + 0.01f;//running
 
 
         if(m_isJumping){

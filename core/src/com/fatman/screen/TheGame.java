@@ -81,7 +81,7 @@ public class TheGame extends ApplicationAdapter {
 
 		//player
 		m_texturePlayer = new Texture(Gdx.files.internal("tileset/larry_run.png"));
-		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer);
+		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer, m_tile_set.getWidth());
 		m_player = new Player(m_playerDrawer);
 		m_playerController = new PlayerController(m_player);
 		m_player.notifyChanges();
@@ -89,7 +89,7 @@ public class TheGame extends ApplicationAdapter {
 		//camera
 		this.m_camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 		this.m_camera.setToOrtho(false,CAMERA_WIDTH,CAMERA_HEIGHT);
-		this.m_camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
+		this.m_camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, m_player.getPosition().x * 64);
 
 	}
 
@@ -100,7 +100,7 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		moveCamera(m_player.getPosition().x, CAMERA_HEIGHT / 2);
+		moveCamera(m_player.getPosition().x * 64, CAMERA_HEIGHT / 2);
 		m_batch.setProjectionMatrix(m_camera.combined);
 
 		BitmapFont bitmapFont = new BitmapFont();
@@ -109,11 +109,10 @@ public class TheGame extends ApplicationAdapter {
 
 			///////////////////////////////LEVEL
 			m_level_drawer.draw();
-			bitmapFont.draw(m_batch, "PlayerPosition : " + Double.toString(m_player_position), 150, 350);
-
+			bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
+			bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
 
 			///////////////////////////////PLAYER
-
 			m_playerController.eventHandler();
 			m_player.update(m_playerController);
 			m_playerDrawer.draw();
@@ -132,10 +131,8 @@ public class TheGame extends ApplicationAdapter {
 	}
 
 	public void moveCamera(float x, float y){
-		if ((m_player.getPosition().x > CAMERA_WIDTH / 2)) {
-			m_camera.position.set(x, y, 0);
-			m_camera.update();
-		}
+		m_camera.position.set(x + CAMERA_WIDTH/2 - 200, y, 0);
+		m_camera.update();
 	}
 
 

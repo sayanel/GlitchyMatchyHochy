@@ -220,7 +220,7 @@ public class Level implements Drawable{
     }
 
     public void checkPlayerPosition(double playerPosition){
-        double modulePosition = getModule(0).getPosition() + getModule(0).getWidth();
+        double modulePosition = getModule(1).getPosition() + getModule(1).getWidth();
         //System.out.println("PlayerPosition : " + playerPosition);
 
         if(playerPosition > modulePosition){

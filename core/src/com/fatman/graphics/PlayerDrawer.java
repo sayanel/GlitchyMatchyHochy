@@ -18,10 +18,12 @@ public class PlayerDrawer implements Drawer {
 
     private SpriteBatch m_batch;
 
-    Vector2 m_position;
-    int m_height;
-    int m_width;
-    Player.State m_state;
+    private Vector2 m_position;
+    private int m_height;
+    private int m_width;
+    private Player.State m_state;
+
+    private int m_tile_width;
 
 
 
@@ -31,31 +33,29 @@ public class PlayerDrawer implements Drawer {
 
     private int m_currentTimeJump;
 
-    boolean m_isJumping;
+    private boolean m_isJumping;
 
     private float m_elapsedTime = 0;
 
 
 
     //******************** * CONSTRUCTORS * ********************//
-    public PlayerDrawer(SpriteBatch batch, Texture texturePlayer) {
+    public PlayerDrawer(SpriteBatch batch, Texture texturePlayer, int tileWidth) {
         m_batch = batch;
 
+        setTileWidth(tileWidth);
 
         TextureRegion[] split = new TextureRegion(texturePlayer).split(113, 113)[0];
         m_playerRunAnimation = new Animation(0.1f, split[0], split[5]);
         split = new TextureRegion(texturePlayer).split(113, 113)[1];
         m_playerJumpAnimation = new Animation(0.1f, split[0], split[5]);
-
-
-
-
-
     }
 
     //******************** * GETTERS * ********************//
 
-
+    public void setTileWidth(int tileWidth){
+        m_tile_width = tileWidth;
+    }
 
     //******************** * SETTERS * ********************//
 
@@ -66,14 +66,14 @@ public class PlayerDrawer implements Drawer {
 
     public void drawJump(){
         //System.out.println("DRAW JUMP");
-        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x, m_position.y);
+        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y);
 
     }
 
     public void drawPlayerRun(){
 
         //System.out.println("DRAW RUN");
-        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x, m_position.y);
+        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y);
 
     }
 
