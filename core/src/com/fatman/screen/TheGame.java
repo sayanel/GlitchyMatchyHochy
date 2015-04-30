@@ -18,7 +18,7 @@ import com.fatman.graphics.TileSet;
 
 import java.util.ArrayList;
 
-//merge level master
+//collision
 
 public class TheGame extends ApplicationAdapter {
 
