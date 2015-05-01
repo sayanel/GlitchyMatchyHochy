@@ -46,11 +46,11 @@ public class PlayerDrawer implements Drawer {
         setTileWidth(tileWidth);
         setTileHeight(tileHeight);
 
+        //TextureRegion[] split = new TextureRegion(texturePlayer).split(128, 128)[0];
         TextureRegion[] split = new TextureRegion(texturePlayer).split(128, 128)[0];
-        m_playerRunAnimation = new Animation(0.9f, split[0], split[5]);
-        m_playerJumpAnimation = new Animation(0.1f, split[0], split[7]);
+        m_playerRunAnimation = new Animation(0.125f, split);
         //split = new TextureRegion(texturePlayer).split(128, 128)[0];
-        //m_playerJumpAnimation = new Animation(0.1f, split[0], split[7]);
+        m_playerJumpAnimation = new Animation(0.125f, split);
     }
 
     //******************** * GETTERS * ********************//
@@ -100,7 +100,6 @@ public class PlayerDrawer implements Drawer {
     //DRAWER METHODS
     public void draw() {
         m_elapsedTime += Gdx.graphics.getDeltaTime();
-
 
         if(m_state == Player.State.RUNNING){
             drawPlayerRun();
