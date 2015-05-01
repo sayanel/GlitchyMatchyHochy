@@ -24,6 +24,7 @@ public class PlayerDrawer implements Drawer {
     private Player.State m_state;
 
     private int m_tile_width;
+    private int m_tile_height;
 
 
 

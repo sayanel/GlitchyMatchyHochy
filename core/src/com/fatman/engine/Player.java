@@ -39,7 +39,7 @@ public class Player implements Drawable, Controllable {
         this.m_weight = 100;
         this.m_lives = 1;
         this.m_position = new Vector2(10,1);
-        this.m_velocity = new Vector2(1,1);
+        this.m_velocity = new Vector2(0.01f,0);
         this.m_acceleration = new Vector2(1,1);
         this.m_height = 2;
         this.m_width = 1;
@@ -53,8 +53,8 @@ public class Player implements Drawable, Controllable {
         this.m_weight = 100;
         this.m_lives = 1;
         this.m_position = new Vector2(10,1);
-        this.m_velocity = new Vector2(1,1);
-        this.m_acceleration = new Vector2(1,1);
+        this.m_velocity = new Vector2(0.07f,0);
+        this.m_acceleration = new Vector2(0.05f,0);
         this.m_height = 2;
         this.m_width = 1;
         this.m_bounds.height = this.m_height;
@@ -72,6 +72,7 @@ public class Player implements Drawable, Controllable {
     public int getWidth(){return m_width;}
     public int getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
+    public Vector2 getVelocity(){return m_velocity;}
     public State getState(){return m_state;}
     public int getCurrentTimeJump(){return m_currentTimeJump;}
 
@@ -93,7 +94,7 @@ public class Player implements Drawable, Controllable {
     }
 
     public void accelerate(){
-        m_position.x = m_position.x + 0.1f;
+        m_position.x += m_acceleration.x;
         //System.out.println("ACCELERATE \n");
     }
 

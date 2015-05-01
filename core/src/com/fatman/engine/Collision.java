@@ -18,7 +18,7 @@ public class Collision {
     }
 
     public void collisionHandler(Player player, LevelModule levelModule){
-        GameObject.GameObjectType collisionType = getModuleCollision(player, levelModule);
+        GameObject.GameObjectType collisionType = getGameObjectCollision(player, levelModule.getGameObjectList());
 
         switch(collisionType){
             case ENNEMY:
@@ -32,11 +32,9 @@ public class Collision {
 
     }
 
-    public GameObject.GameObjectType getModuleCollision(Player player, LevelModule levelModule){
+    public GameObject.GameObjectType getGameObjectCollision(Player player, ArrayList<GameObject> objectList){
 
         GameObject.GameObjectType collisionType = GameObject.GameObjectType.VOID;
-
-        ArrayList<GameObject> objectList = levelModule.getGameObjectList();
 
         for(int i = 0; i < objectList.size(); ++i){
             Rectangle playerBounds = genPlayerRectangle(player);
