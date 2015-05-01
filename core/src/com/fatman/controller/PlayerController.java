@@ -55,7 +55,7 @@ public class PlayerController implements Controller{
         }
 
         ///////ACCELERATE
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             m_player.accelerate();
         }
 

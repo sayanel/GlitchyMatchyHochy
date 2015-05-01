@@ -6,15 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.fatman.controller.PlayerController;
 import com.fatman.engine.Collision;
 import com.fatman.engine.Level;
 import com.fatman.engine.LevelModule;
 import com.fatman.engine.Player;
-import com.fatman.graphics.LevelDrawer;
-import com.fatman.graphics.LevelModuleDrawer;
-import com.fatman.graphics.PlayerDrawer;
-import com.fatman.graphics.TileSet;
+import com.fatman.graphics.*;
 
 import java.util.ArrayList;
 
@@ -35,12 +34,14 @@ public class TheGame extends ApplicationAdapter {
 	private Texture m_tile_set_texture;
 	private Texture m_game_object_sprite_texture;
 
+	///////////////////////////BACKGROUND
+	private ParallaxBackground m_bg;
+
 
 	///////////////////////////PLAYER
 	private Player m_player;
 	private PlayerController m_playerController;
 	private PlayerDrawer m_playerDrawer;
-	private TileSet m_tileSetPlayer;
 	private Texture m_texturePlayer;
 
 	////////////////////////CAMERA
@@ -79,6 +80,15 @@ public class TheGame extends ApplicationAdapter {
 		m_level.notifyChanges();
 		m_level.print();
 
+		//////////////////////////BACKGROUND
+		TextureRegion bg1 = new TextureRegion(new Texture(Gdx.files.internal("background/bg.jpg")));
+		TextureRegion bg2 = new TextureRegion(new Texture(Gdx.files.internal("background/bg2.png")));
+		m_bg = new ParallaxBackground(new ParallaxLayer[]{
+				new ParallaxLayer(bg1,new Vector2(0.05f,0.05f),new Vector2(0,150), new Vector2(0, 0)),
+				new ParallaxLayer(bg2,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
+		}, 800, 600, new Vector2(150,0));
+
+
 		///////////////////////////PLAYER
 		m_texturePlayer = new Texture(Gdx.files.internal("tileset/fatboy_sprite.png"));
 		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer, m_tile_set.getWidth(), m_tile_set.getHeight());
@@ -105,7 +115,7 @@ public class TheGame extends ApplicationAdapter {
 		moveCamera(m_player.getPosition().x * 64, CAMERA_HEIGHT / 2);
 		m_batch.setProjectionMatrix(m_camera.combined);
 
-//		BitmapFont bitmapFont = new BitmapFont();
+		//BitmapFont bitmapFont = new BitmapFont();
 		m_playerController.eventHandler();
 		m_player.update(m_playerController);
 
@@ -113,13 +123,19 @@ public class TheGame extends ApplicationAdapter {
 
 		m_level.checkPlayerPosition(m_player.getPosition().x);
 
+		///////////////////////////////////BACKGROUND
+		m_bg.draw(0.05f);
+
 		m_batch.begin();
+
 			///////////////////////////////LEVEL
 			m_level_drawer.draw();
-//			bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
-//			bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
+			//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
+			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
+
 			///////////////////////////////PLAYER
 			m_playerDrawer.draw();
+
 		m_batch.end();
 
 
