@@ -32,6 +32,7 @@ public class LevelModule implements Drawable{
 
     private double m_position;
     private double m_width;
+    private double m_height;
 
     private Drawer m_drawer;
 
@@ -104,6 +105,11 @@ public class LevelModule implements Drawable{
     public double getWidth(){
         return m_width;
     }
+
+    public double getHeight(){
+        return m_height;
+    }
+
 
     public ArrayList<GameObject> getGameObjectList(){
         return m_objects;
