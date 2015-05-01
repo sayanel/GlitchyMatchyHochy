@@ -19,7 +19,7 @@ import com.fatman.graphics.TileSet;
 
 import java.util.ArrayList;
 
-//collision
+//merge collision master
 
 public class TheGame extends ApplicationAdapter {
 
