@@ -7,11 +7,14 @@
 
 package com.fatman.engine;
 
+import com.badlogic.gdx.math.Vector2;
 import com.fatman.graphics.Drawable;
 import com.fatman.graphics.Drawer;
+import com.fatman.graphics.GameObjectDrawer;
 import com.fatman.graphics.LevelModuleDrawer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class LevelModule implements Drawable{
 
@@ -25,6 +28,7 @@ public class LevelModule implements Drawable{
 
     private Pattern m_scene_pattern;
     private Pattern m_object_pattern;
+    private ArrayList<GameObject> m_objects;
 
     private double m_position;
     private double m_width;
@@ -35,6 +39,7 @@ public class LevelModule implements Drawable{
 
     public LevelModule(LevelModuleDrawer levelModuleDrawer){
         setDrawer(levelModuleDrawer);
+        m_objects = new ArrayList<GameObject>();
         notifyChanges();
     }
 
@@ -43,6 +48,8 @@ public class LevelModule implements Drawable{
         m_object_pattern = object_pattern;
         m_width = m_scene_pattern.getWidth();
         setDrawer(levelModuleDrawer);
+
+        m_objects = new ArrayList<GameObject>();
         notifyChanges();
     }
 
@@ -57,8 +64,32 @@ public class LevelModule implements Drawable{
         notifyChanges();
     }
 
-    public void genRandomObjects(){
 
+    public GameObject genRandomGameObject(){
+        Random r = new Random();
+        Vector2 vector = new Vector2();
+
+        vector.x = r.nextInt(9) + ((float) m_position);
+        vector.y = 1;
+        getDrawer().getSpriteBatch();
+        GameObjectDrawer gameObjectDrawer = new GameObjectDrawer(getDrawer().getGameObjectSprite(), getDrawer().getSpriteBatch(), getDrawer().getTileWidth(), getDrawer().getTileHeight());
+        GameObject g = new GameObject(vector, GameObject.typeFromInt(r.nextInt(2)), gameObjectDrawer);
+        g.notifyChanges();
+        return g;
+    }
+
+    public void genRandomObjects(int maxObjectNumber){
+        Random r = new Random();
+        int ennemyNumber = r.nextInt(maxObjectNumber);
+
+        for(int i = 0; i < ennemyNumber; ++i){
+            m_objects.add(genRandomGameObject());
+        }
+        notifyChanges();
+    }
+
+    public void genRandomObjects(){
+        genRandomObjects(3);
     }
 
     public void setPosition(double position){
@@ -74,6 +105,10 @@ public class LevelModule implements Drawable{
         return m_width;
     }
 
+    public ArrayList<GameObject> getGameObjectList(){
+        return m_objects;
+    }
+
     public void print(){
 
         System.out.println("******** LEVEL_MODULE *********");
@@ -83,6 +118,11 @@ public class LevelModule implements Drawable{
         m_scene_pattern.print();
         System.out.println("- object_pattern : ");
         m_object_pattern.print();
+        System.out.println("- random_objects : ");
+        for(GameObject gameObject : m_objects){
+            gameObject.print();
+        }
+
 
     }
 
@@ -101,8 +141,8 @@ public class LevelModule implements Drawable{
     }
 
     @Override
-    public Drawer getDrawer() {
-        return m_drawer;
+    public LevelModuleDrawer getDrawer() {
+        return ((LevelModuleDrawer) m_drawer);
     }
 
     @Override
