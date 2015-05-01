@@ -46,7 +46,6 @@ public class PlayerDrawer implements Drawer {
         setTileWidth(tileWidth);
         setTileHeight(tileHeight);
 
-        //TextureRegion[] split = new TextureRegion(texturePlayer).split(128, 128)[0];
         TextureRegion[] split = new TextureRegion(texturePlayer).split(128, 128)[0];
         m_playerRunAnimation = new Animation(0.125f, split);
         //split = new TextureRegion(texturePlayer).split(128, 128)[0];

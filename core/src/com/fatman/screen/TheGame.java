@@ -45,7 +45,7 @@ public class TheGame extends ApplicationAdapter {
 
 	////////////////////////CAMERA
 	private static final float CAMERA_WIDTH = 800f;
-	private static final float CAMERA_HEIGHT = 480f;
+	private static final float CAMERA_HEIGHT = 600f;
 
 	private OrthographicCamera m_camera;
 
