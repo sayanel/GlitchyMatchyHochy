@@ -33,9 +33,9 @@ public class Collision {
             default:
         }
 
-        for(int i=0;i<listOfObject.size();i++) {
-            System.out.print("COLLISION WITH : " + listOfObject.get(i));
-        }
+//        for(int i=0;i<listOfObject.size();i++) {
+//            System.out.print("COLLISION WITH : " + listOfObject.get(i));
+//        }
 
     }
 
@@ -66,17 +66,21 @@ public class Collision {
         ArrayList<Integer> listOfObject = new ArrayList<Integer>();
 
 
-        for(int i = 0; i < module.getObjectPattern().getData().length; ++i){
-            for(int j = 0; j < module.getObjectPattern().getData()[0].length; ++j){
+        for(int i = 0; i < module.getObjectPattern().getHeight(); ++i){
+            for(int j = 0; j < module.getObjectPattern().getWidth(); ++j){
                 Rectangle playerBounds = new Rectangle((float) posPlayerRelx, (float)posPlayerRely, player.getWidth(), player.getHeight());
-                Rectangle objectPatternBound = genTileBounds(module.getDrawer(), i, j);
+                Rectangle objectPatternBound = genTileBounds(module.getObjectPattern().getHeight() - i - 1, j);
 
                 if(playerBounds.overlaps(objectPatternBound) && module.getObjectPattern().getData()[i][j] > 0) {
-                    System.out.print("Collide");
+                    System.out.println("Collide in :");
 
                     listOfObject.add(module.getObjectPattern().getData()[i][j]); //On a touché ce qu'il y avait en (i,j) donc on l'ajoute
 
-                    module.getObjectPattern().getData()[i][j] = 0;
+                    System.out.println("PlayerCoord : " + player.getPosition());
+                    System.out.println("PlayerCoordRelative : " + posPlayerRelx + ", " + posPlayerRely);
+                    System.out.println("tileCoord : " + i + ", " + j);
+
+                    module.getObjectPattern().setData(i, j, 0);
                 }
             }
         }
@@ -93,8 +97,8 @@ public class Collision {
         return new Rectangle(gameObject.getPosition().x, gameObject.getPosition().y, ((float) gameObject.getWidth()), ((float) gameObject.getHeight()));
     }
 
-    public Rectangle genTileBounds(LevelModuleDrawer module, int i, int j) {
-        return new Rectangle(i*module.getTileWidth(), j*module.getTileHeight(), module.getTileWidth(),module.getTileHeight());
+    public Rectangle genTileBounds(int i, int j) {
+        return new Rectangle(j+0.25f, i + 0.15f, 0.7f, 0.5f);
     }
 
 }

@@ -96,6 +96,24 @@ public class Pattern {
         }
     }
 
+    public void setData(int i, int j, int value){
+        m_pattern[i][j] = value;
+    }
+
+    public Pattern clone(){
+        Pattern newPattern = new Pattern();
+        newPattern.m_pattern = new int[PATTERN_HEIGHT][PATTERN_WIDTH];
+        for(int i = 0; i < PATTERN_HEIGHT; ++i){
+            for(int j = 0; j < PATTERN_WIDTH; ++j){
+                newPattern.m_pattern[i][j] = m_pattern[i][j];
+            }
+        }
+        //newPattern.m_pattern = m_pattern.clone();
+
+        newPattern.PATTERN_WIDTH = PATTERN_WIDTH;
+        return newPattern;
+    }
+
     public void print(){
         System.out.println("--------");
         for(int i = 0; i< PATTERN_HEIGHT; ++i){
@@ -109,6 +127,9 @@ public class Pattern {
 
     public int getWidth(){
         return PATTERN_WIDTH;
+    }
+    public int getHeight(){
+        return PATTERN_HEIGHT;
     }
 
     public int[][] getData(){

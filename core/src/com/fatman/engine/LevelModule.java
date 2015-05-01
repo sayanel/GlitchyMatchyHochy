@@ -46,8 +46,10 @@ public class LevelModule implements Drawable{
 
     public LevelModule(Pattern scene_pattern, Pattern object_pattern, Drawer levelModuleDrawer){
         m_scene_pattern = scene_pattern;
-        m_object_pattern = object_pattern;
+        m_object_pattern = object_pattern.clone();
+
         m_width = m_scene_pattern.getWidth();
+
         setDrawer(levelModuleDrawer);
 
         m_objects = new ArrayList<GameObject>();

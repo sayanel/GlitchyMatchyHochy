@@ -149,8 +149,6 @@ public class TheGame extends ApplicationAdapter {
 		m_batch.end();
 
 
-
-
 	}
 
 	@Override
