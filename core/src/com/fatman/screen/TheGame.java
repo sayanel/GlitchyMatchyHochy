@@ -50,8 +50,6 @@ public class TheGame extends ApplicationAdapter {
 	private OrthographicCamera m_camera;
 
 
-
-
 	@Override
 	public void create () {
 
