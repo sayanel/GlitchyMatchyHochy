@@ -18,7 +18,7 @@ import com.fatman.graphics.TileSet;
 
 import java.util.ArrayList;
 
-// Level yo
+//merge level master !!
 
 public class TheGame extends ApplicationAdapter {
 
@@ -48,8 +48,6 @@ public class TheGame extends ApplicationAdapter {
 	private static final float CAMERA_HEIGHT = 480f;
 
 	private OrthographicCamera m_camera;
-
-
 
 
 	@Override
