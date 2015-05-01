@@ -21,6 +21,11 @@ import java.util.ArrayList;
 
 public class TheGame extends ApplicationAdapter {
 
+	///////////////////////////CONSTANTS
+	public static final int GAME_WIDTH = 800;
+	public static final int GAME_HEIGHT = 480;
+
+
 	///////////////////////////BATCH
 	private SpriteBatch m_batch;
 
@@ -35,7 +40,7 @@ public class TheGame extends ApplicationAdapter {
 	private Texture m_game_object_sprite_texture;
 
 	///////////////////////////BACKGROUND
-	private ParallaxBackground m_bg;
+	private ParallaxBackground m_background;
 
 
 	///////////////////////////PLAYER
@@ -45,8 +50,8 @@ public class TheGame extends ApplicationAdapter {
 	private Texture m_texturePlayer;
 
 	////////////////////////CAMERA
-	private static final float CAMERA_WIDTH = 800f;
-	private static final float CAMERA_HEIGHT = 600f;
+	private static final float CAMERA_WIDTH = (float) GAME_WIDTH;
+	private static final float CAMERA_HEIGHT = (float) GAME_HEIGHT;
 
 	private OrthographicCamera m_camera;
 
@@ -83,10 +88,10 @@ public class TheGame extends ApplicationAdapter {
 		//////////////////////////BACKGROUND
 		TextureRegion bg1 = new TextureRegion(new Texture(Gdx.files.internal("background/bg.jpg")));
 		TextureRegion bg2 = new TextureRegion(new Texture(Gdx.files.internal("background/bg2.png")));
-		m_bg = new ParallaxBackground(new ParallaxLayer[]{
-				new ParallaxLayer(bg1,new Vector2(0.05f,0.05f),new Vector2(0,150), new Vector2(0, 0)),
+		m_background = new ParallaxBackground(new ParallaxLayer[]{
+				new ParallaxLayer(bg1,new Vector2(0.05f,0.05f),new Vector2(0,100), new Vector2(0, 0)),
 				new ParallaxLayer(bg2,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
-		}, 800, 600, new Vector2(150,0));
+		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150,0));
 
 
 		///////////////////////////PLAYER
@@ -124,7 +129,7 @@ public class TheGame extends ApplicationAdapter {
 		m_level.checkPlayerPosition(m_player.getPosition().x);
 
 		///////////////////////////////////BACKGROUND
-		m_bg.draw(0.05f);
+		m_background.draw(0.05f);
 
 		m_batch.begin();
 
