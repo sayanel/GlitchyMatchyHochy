@@ -76,7 +76,7 @@ public class PlayerDrawer implements Drawer {
         else if(m_currentTimeJump > 40){ jump = 0.06f; }
         else if(m_currentTimeJump > 32){ jump = 0.02f; }
         else if(m_currentTimeJump > 26){ jump = 0.0f; }
-        else if(m_currentTimeJump >= 19){ jump = -0.02f; }
+        else if(m_currentTimeJump >= 19){ jump = -0.02f; m_position.x += 0.005f; }
         else if(m_currentTimeJump >= 10){ jump = -0.06f; }
         else{ jump = -0.1f;}
 
