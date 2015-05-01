@@ -80,7 +80,7 @@ public class TheGame extends ApplicationAdapter {
 		m_level.print();
 
 		///////////////////////////PLAYER
-		m_texturePlayer = new Texture(Gdx.files.internal("tileset/larry_run.png"));
+		m_texturePlayer = new Texture(Gdx.files.internal("tileset/fatboy_sprite.png"));
 		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer, m_tile_set.getWidth(), m_tile_set.getHeight());
 		m_player = new Player(m_playerDrawer);
 		m_playerController = new PlayerController(m_player);
