@@ -17,8 +17,8 @@ public class Collision {
 
     }
 
-    public void collisionHandler(Player player, Level level){
-        GameObject.GameObjectType collisionType = getModuleCollision(player, level.getPlayerModule(player.getPosition().x));
+    public void collisionHandler(Player player, LevelModule levelModule){
+        GameObject.GameObjectType collisionType = getModuleCollision(player, levelModule);
 
         switch(collisionType){
             case ENNEMY:

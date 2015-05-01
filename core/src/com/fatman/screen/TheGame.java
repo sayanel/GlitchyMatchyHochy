@@ -110,7 +110,7 @@ public class TheGame extends ApplicationAdapter {
 		m_playerController.eventHandler();
 		m_player.update(m_playerController);
 
-		col.collisionHandler(m_player, m_level);
+		col.collisionHandler(m_player, m_level.getModule(1));
 
 		m_level.checkPlayerPosition(m_player.getPosition().x);
 
