@@ -18,6 +18,7 @@ import com.fatman.graphics.*;
 import java.util.ArrayList;
 
 //merge master to graphic
+//bite
 
 public class TheGame extends ApplicationAdapter {
 
