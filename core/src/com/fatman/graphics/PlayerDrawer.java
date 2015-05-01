@@ -66,14 +66,14 @@ public class PlayerDrawer implements Drawer {
 
     public void drawJump(){
         //System.out.println("DRAW JUMP");
-        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y);
+        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * 64);
 
     }
 
     public void drawPlayerRun(){
 
         //System.out.println("DRAW RUN");
-        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y);
+        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * 64);
 
     }
 

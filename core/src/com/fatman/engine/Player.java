@@ -40,11 +40,11 @@ public class Player implements Drawable, Controllable {
     public Player(){
         this.m_weight = 100;
         this.m_lives = 1;
-        this.m_position = new Vector2(0,2);
+        this.m_position = new Vector2(0,1);
         this.m_velocity = new Vector2(1,1);
         this.m_acceleration = new Vector2(1,1);
-        this.m_height = 80;
-        this.m_width = 60;
+        this.m_height = 2;
+        this.m_width = 1;
         this.m_bounds.height = this.m_height;
         this.m_bounds.width = this.m_width;
         this.m_currentTimeJump = TIME_JUMP;
@@ -54,11 +54,11 @@ public class Player implements Drawable, Controllable {
     public Player(Drawer drawer){
         this.m_weight = 100;
         this.m_lives = 1;
-        this.m_position = new Vector2(0,2);
+        this.m_position = new Vector2(0,1);
         this.m_velocity = new Vector2(1,1);
         this.m_acceleration = new Vector2(1,1);
-        this.m_height = 80;
-        this.m_width = 60;
+        this.m_height = 2;
+        this.m_width = 1;
         this.m_bounds.height = this.m_height;
         this.m_bounds.width = this.m_width;
         this.m_currentTimeJump = TIME_JUMP;
@@ -97,8 +97,8 @@ public class Player implements Drawable, Controllable {
     }
 
     public void accelerate(){
-        m_position.x = m_position.x + 0.02f;
-        System.out.println("ACCELERATE \n");
+        m_position.x = m_position.x + 0.1f;
+        //System.out.println("ACCELERATE \n");
     }
 
     public void hit(){
@@ -153,7 +153,7 @@ public class Player implements Drawable, Controllable {
     public void update(Controller controller){
         //player modifications setters
 
-        m_position.x = m_position.x + 0.01f;//running
+        m_position.x = m_position.x + 0.08f;//running
 
 
         if(m_isJumping){
