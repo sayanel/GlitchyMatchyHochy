@@ -68,7 +68,7 @@ public class Collision {
 
         for(int i = 0; i < module.getObjectPattern().getData().length; ++i){
             for(int j = 0; j < module.getObjectPattern().getData()[0].length; ++j){
-                Rectangle playerBounds = new Rectangle(posPlayerRelx, posPlayerRely, player.getWidth(), player.getHeight());
+                Rectangle playerBounds = new Rectangle((float) posPlayerRelx, (float)posPlayerRely, player.getWidth(), player.getHeight());
                 Rectangle objectPatternBound = genTileBounds(module.getDrawer(), i, j);
 
                 if(playerBounds.overlaps(objectPatternBound) && module.getObjectPattern().getData()[i][j] > 0) {
