@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fatman.controller.PlayerController;
+import com.fatman.engine.Collision;
 import com.fatman.engine.Level;
 import com.fatman.engine.LevelModule;
 import com.fatman.engine.Player;
@@ -18,23 +19,23 @@ import com.fatman.graphics.TileSet;
 
 import java.util.ArrayList;
 
-//merge level master 1234
+//collision
 
 public class TheGame extends ApplicationAdapter {
 
 	///////////////////////////BATCH
 	private SpriteBatch m_batch;
 
+
+	///////////////////////////LEVEL
 	private Level m_level;
 	private LevelDrawer m_level_drawer;
 
-
 	private TileSet m_tile_set;
-	private Texture m_texture;
+	private TileSet m_game_object_sprite;
+	private Texture m_tile_set_texture;
+	private Texture m_game_object_sprite_texture;
 
-	private double m_player_position;
-
-	private double m_alpha;
 
 	///////////////////////////PLAYER
 	private Player m_player;
@@ -49,51 +50,55 @@ public class TheGame extends ApplicationAdapter {
 
 	private OrthographicCamera m_camera;
 
+	///////////////////////////COLLISION
+	Collision col;
+
+
 
 	@Override
 	public void create () {
 
+		///////////////////////////BATCH
 		m_batch = new SpriteBatch();
 
-		m_texture = new Texture(Gdx.files.internal("tileset/latile.png"));
+		///////////////////////////LEVEL
+		m_tile_set_texture = new Texture(Gdx.files.internal("tileset/latile.png"));
+		m_game_object_sprite_texture = new Texture(Gdx.files.internal("tileset/bouffe.png"));
 
-		m_tile_set = new TileSet(m_texture, 64, 64);
+		m_tile_set = new TileSet(m_tile_set_texture, 64, 64);
+		m_game_object_sprite = new TileSet(m_game_object_sprite_texture, 64, 64);
 
 		m_level_drawer = new LevelDrawer();
 		m_level = new Level("patterns/", new ArrayList<LevelModule>(), m_level_drawer);
 
-		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_batch)));
-		for(int i = 0; i < 4; ++i){
+		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_game_object_sprite, m_batch)));
+		for(int i = 0; i < 3; ++i){
 			double position = m_level.peek().getPosition() + m_level.peek().getWidth();
-			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_batch)));
+			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_game_object_sprite, m_batch)));
 		}
 
 		m_level.notifyChanges();
-
 		m_level.print();
 
-		m_player_position = 0;
-
-		m_alpha = 0.01;
-
-
-		//player
+		///////////////////////////PLAYER
 		m_texturePlayer = new Texture(Gdx.files.internal("tileset/larry_run.png"));
 		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer, m_tile_set.getWidth());
 		m_player = new Player(m_playerDrawer);
 		m_playerController = new PlayerController(m_player);
 		m_player.notifyChanges();
 
-		//camera
+		///////////////////////////CAMERA
 		this.m_camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 		this.m_camera.setToOrtho(false,CAMERA_WIDTH,CAMERA_HEIGHT);
 		this.m_camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, m_player.getPosition().x * 64);
+
+		///////////////////////////COLLISION
+		col = new Collision();
 
 	}
 
 	@Override
 	public void render () {
-
 
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -101,25 +106,25 @@ public class TheGame extends ApplicationAdapter {
 		moveCamera(m_player.getPosition().x * 64, CAMERA_HEIGHT / 2);
 		m_batch.setProjectionMatrix(m_camera.combined);
 
-		BitmapFont bitmapFont = new BitmapFont();
+//		BitmapFont bitmapFont = new BitmapFont();
+		m_playerController.eventHandler();
+		m_player.update(m_playerController);
+
+		col.collisionHandler(m_player, m_level.getModule(1));
+
+		m_level.checkPlayerPosition(m_player.getPosition().x);
 
 		m_batch.begin();
-
 			///////////////////////////////LEVEL
 			m_level_drawer.draw();
-			bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
-			bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
-
+//			bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
+//			bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
 			///////////////////////////////PLAYER
-			m_playerController.eventHandler();
-			m_player.update(m_playerController);
 			m_playerDrawer.draw();
-
-
 		m_batch.end();
 
 
-		m_level.checkPlayerPosition(m_player.getPosition().x);
+
 
 	}
 

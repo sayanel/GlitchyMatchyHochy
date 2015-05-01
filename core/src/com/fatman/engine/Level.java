@@ -172,8 +172,8 @@ public class Level implements Drawable{
         int randomIndex2 = r.nextInt(arraySize);
 
         LevelModule levelModule = new LevelModule(m_level_scene_patterns.get(randomIndex), m_level_object_patterns.get(randomIndex2), levelModuleDrawer);
-
         levelModule.setPosition(position);
+        levelModule.genRandomObjects();
 
         return levelModule;
     }
@@ -224,12 +224,29 @@ public class Level implements Drawable{
         //System.out.println("PlayerPosition : " + playerPosition);
 
         if(playerPosition > modulePosition){
-
-            System.out.println("Module Changed !");
+            //System.out.println("Module Changed !");
             updateList();
             notifyChanges();
         }
     }
+
+    public LevelModule getPlayerModule(double playerPosition){
+        boolean foundModule = false;
+        int i = 0;
+
+        while(!foundModule){
+            double moduleBegin = getModule(i).getPosition();
+            double moduleEnd = moduleBegin + getModule(i).getWidth();
+
+            if(playerPosition >= moduleBegin && playerPosition < moduleEnd){
+                foundModule = true;
+            }
+            i++;
+        }
+        //System.out.println("CurrentModule : " + (i - 1));
+        return getModule(i-1);
+    }
+
     //------ GESTION DRAWERS
 
     @Override
