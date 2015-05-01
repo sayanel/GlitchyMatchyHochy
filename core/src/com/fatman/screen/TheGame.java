@@ -31,8 +31,10 @@ public class TheGame extends ApplicationAdapter {
 	private LevelDrawer m_level_drawer;
 
 	private TileSet m_tile_set;
+	private TileSet m_tile_set_object;
 	private TileSet m_game_object_sprite;
 	private Texture m_tile_set_texture;
+	private Texture m_tile_set_texture_object;
 	private Texture m_game_object_sprite_texture;
 
 
@@ -62,18 +64,20 @@ public class TheGame extends ApplicationAdapter {
 
 		///////////////////////////LEVEL
 		m_tile_set_texture = new Texture(Gdx.files.internal("tileset/latile.png"));
+		m_tile_set_texture_object = new Texture(Gdx.files.internal("tileset/PiluleMoche.png"));
 		m_game_object_sprite_texture = new Texture(Gdx.files.internal("tileset/food_sprite.png"));
 
 		m_tile_set = new TileSet(m_tile_set_texture, 64, 64);
+		m_tile_set_object = new TileSet(m_tile_set_texture_object, 64, 64);
 		m_game_object_sprite = new TileSet(m_game_object_sprite_texture, 64, 64);
 
 		m_level_drawer = new LevelDrawer();
 		m_level = new Level("patterns/", new ArrayList<LevelModule>(), m_level_drawer);
 
-		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_game_object_sprite, m_batch)));
+		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_batch)));
 		for(int i = 0; i < 3; ++i){
 			double position = m_level.peek().getPosition() + m_level.peek().getWidth();
-			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_game_object_sprite, m_batch)));
+			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_batch)));
 		}
 
 		m_level.notifyChanges();

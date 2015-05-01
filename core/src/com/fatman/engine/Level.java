@@ -87,6 +87,7 @@ public class Level implements Drawable{
         }
     }
 
+
     /*  storeObjectPatterns()
         fonction qui récupère tous les
         fichiers présents dans le dossier
@@ -94,6 +95,7 @@ public class Level implements Drawable{
         enregistre dans la variable
         m_level_object_patterns
     */
+
     public void storeObjectPatterns() throws  IOException{
         FileHandle infoFile = Gdx.files.internal(m_pattern_path + "object_patterns/object.info");
         BufferedReader info = infoFile.reader(8);

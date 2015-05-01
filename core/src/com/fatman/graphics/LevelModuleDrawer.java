@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class LevelModuleDrawer implements Drawer{
 
     private TileSet m_tile_set;
+    private TileSet m_tile_set_object;
     private TileSet m_game_object_sprite;
 
     private SpriteBatch m_batch;
@@ -35,6 +36,16 @@ public class LevelModuleDrawer implements Drawer{
 
     public LevelModuleDrawer(TileSet tileSet, TileSet gameObjectSprite, SpriteBatch batch){
         m_tile_set = tileSet;
+        m_game_object_sprite = gameObjectSprite;
+        m_batch = batch;
+        m_scene_data = null;
+        m_object_data = null;
+        m_game_objects = null;
+    }
+
+    public LevelModuleDrawer(TileSet tileSet, TileSet tileSetObject, TileSet gameObjectSprite, SpriteBatch batch){
+        m_tile_set = tileSet;
+        m_tile_set_object = tileSetObject;
         m_game_object_sprite = gameObjectSprite;
         m_batch = batch;
         m_scene_data = null;
@@ -68,6 +79,17 @@ public class LevelModuleDrawer implements Drawer{
                     float y = (float)(4*m_tile_set.getHeight()) - (float)(i * m_tile_set.getHeight());
                     m_tile_set.getTile(m_scene_data[i][j]).setPosition(x, y);
                     m_tile_set.getTile(m_scene_data[i][j]).draw(m_batch);
+                }
+            }
+        }
+
+        for(int k = 0; k < m_object_data.length; ++k){
+            for(int l = 0; l < m_object_data[0].length; ++l){
+                if(m_scene_data[k][l] > 0){
+                    float x = (float)(m_position * m_tile_set_object.getWidth() +  l * m_tile_set_object.getWidth());
+                    float y = (float)(4*m_tile_set_object.getHeight()) - (float)(k * m_tile_set_object.getHeight());
+                    m_tile_set_object.getTile(m_object_data[k][l]).setPosition(x, y);
+                    m_tile_set_object.getTile(m_object_data[k][l]).draw(m_batch);
                 }
             }
         }
