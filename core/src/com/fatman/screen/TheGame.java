@@ -62,7 +62,6 @@ public class TheGame extends ApplicationAdapter {
 	Collision col;
 
 
-
 	@Override
 	public void create () {
 
