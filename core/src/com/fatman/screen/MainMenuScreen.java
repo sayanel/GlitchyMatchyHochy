@@ -9,6 +9,8 @@
 package com.fatman.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,9 +31,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-public class MainMenuScreen extends AbstractScreen implements InputProcessor{
+public class MainMenuScreen extends AbstractScreen{
     Sprite m_title;
-
+    Sprite m_play;
+    Sprite m_play_hover;
+    Sprite m_arrow;
+    boolean hovered = false;
 
     OrthographicCamera m_camera;
     private int width = 800;
@@ -41,11 +46,13 @@ public class MainMenuScreen extends AbstractScreen implements InputProcessor{
 
     public MainMenuScreen(final TheGame game) {
         super(game);
-        Gdx.input.setInputProcessor(this);
+       // Gdx.input.setInputProcessor(this);
         m_title = new Sprite(new Texture(Gdx.files.internal("data/sprites/title.png")));
-        m_game.m_batch = new SpriteBatch();
-        m_game.m_batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 480);
-
+        m_play = new Sprite(new Texture(Gdx.files.internal("data/sprites/play.png")));
+        m_play_hover = new Sprite(new Texture(Gdx.files.internal("data/sprites/play2.png")));
+        m_arrow = new Sprite(new Texture(Gdx.files.internal("data/sprites/arrow.png")));
+        m_game.setSpriteBatch(new SpriteBatch());
+        m_game.getSpriteBatch().getProjectionMatrix().setToOrtho2D(0, 0, 800, 480);
     }
 
     @Override
@@ -55,22 +62,31 @@ public class MainMenuScreen extends AbstractScreen implements InputProcessor{
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+        Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
 
 
-       /* time += delta;
-        if(time < 1.0f){
-            return;
-        }*/
+
+        hovered = (Gdx.input.getX() >= 248 && Gdx.input.getX() <= 552 && Gdx.input.getY() >=  250 && Gdx.input.getY() <= 325);
 
 
-        m_game.m_batch.begin();
+        m_game.getSpriteBatch().begin();
 
-        m_game.m_batch.draw(m_title, 100, 320, 0, 0, 600, 90f, 1f, 1f, 0);
+        m_game.getSpriteBatch().draw(m_title, 100, 320, 0, 0, 600f, 90f, 1f, 1f, 0);
+        m_game.getSpriteBatch().draw((hovered) ? m_play : m_play_hover, 248, 150, 0, 0, 304f, 75f, 1f, 1f, 0);
 
-        m_game.m_batch.end();
+        if(hovered){
+            m_game.getSpriteBatch().draw(m_arrow, 200, 165, 0, 0, 46f, 46f, 1f, 1f, 0);
+        }
+
+        m_game.getSpriteBatch().end();
+
+
+
+        if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || (Gdx.input.justTouched()&&hovered )) {
+            System.out.println("GAME");
+            m_game.setScreen(new GameScreen(m_game));
+        }
     }
 
     @Override
@@ -132,48 +148,8 @@ public class MainMenuScreen extends AbstractScreen implements InputProcessor{
         m_camera.position.x = 400;
         m_camera.position.y = 240;
         m_camera.update();
-        m_game.m_batch.getProjectionMatrix().set(m_camera.combined);
+        m_game.getSpriteBatch().getProjectionMatrix().set(m_camera.combined);
 
-    }
-
-    @Override
-    public boolean keyDown(int keycode){
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 
     @Override
