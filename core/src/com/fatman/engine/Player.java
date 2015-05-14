@@ -49,10 +49,12 @@ public class Player implements Drawable, Controllable {
 
     private Drawer m_drawer;
 
+    private Drawer m_interface_drawer;
+
 
     //******************** * CONSTRUCTORS * ********************//
 
-    public Player(Drawer drawer){
+    public Player(Drawer drawer, Drawer interface_drawer){
         this.m_weight = 0;
         this.m_pills_number = 0;
         this.m_position = new Vector2(10,1);
@@ -71,6 +73,7 @@ public class Player implements Drawable, Controllable {
         m_state = State.RUNNING;
 
         setDrawer(drawer);
+        setInterfaceDrawer(interface_drawer);
         notifyChanges();
     }
 
@@ -178,18 +181,23 @@ public class Player implements Drawable, Controllable {
         m_drawer = d;
     }
 
+    public void setInterfaceDrawer(Drawer d) {
+        m_interface_drawer = d;
+    }
+
     @Override
     public Drawer getDrawer() {
         return m_drawer;
+    }
+    public Drawer getInterfaceDrawer() {
+        return m_interface_drawer;
     }
 
     @Override
     public void notifyChanges() {
         m_drawer.update(this);
+        m_interface_drawer.update(this);
     }
-
-
-
 
     //CONTROLLABLE METHODS
     public void update(Controller controller){

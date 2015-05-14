@@ -16,19 +16,6 @@ public class PlayerController implements Controller{
     //******************** * PARAMETERS * ********************//
     Player m_player;
 
-    /*enum Keys {
-        ACCELERATE, JUMP, HIT
-    }
-
-    static Map<Keys, Boolean> keys = new HashMap<PlayerController.Keys, Boolean>();
-
-    static {
-        keys.put(Keys.ACCELERATE, false);
-        keys.put(Keys.JUMP, false);
-        keys.put(Keys.HIT, false);
-    };*/
-
-
 
     //******************** * CONSTRUCTORS * ********************//
     public  PlayerController(Player player){
@@ -36,13 +23,9 @@ public class PlayerController implements Controller{
     }
 
 
-
-
     //******************** * FUNCTIONS * ********************//
 
-    //CONTROLLER METHODS
     public void eventHandler(){
-        //get keys input
 
         ///////JUMP
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
@@ -73,12 +56,6 @@ public class PlayerController implements Controller{
 
         }
 
-
-
-
-        //set new parameters
-
-        //notifyChanges
     }
 
     public void setControllable(){
@@ -86,41 +63,7 @@ public class PlayerController implements Controller{
     }
 
     public void notifyChanges() {
-        //m_player.update();
     }
-
-
-    //PLAYERCONTROLLER METHODS
-/*
-        //PRESSED
-    public void rightPressed() {
-        keys.get(keys.put(Keys.ACCELERATE, true));
-    }
-
-    public void jumpPressed() {
-        keys.get(keys.put(Keys.JUMP, true));
-    }
-
-    public void firePressed() {
-        keys.get(keys.put(Keys.HIT, true));
-    }
-
-        //RELEASED
-    public void rightReleased() {
-        keys.get(keys.put(Keys.ACCELERATE, false));
-    }
-
-    public void jumpReleased() {
-        keys.get(keys.put(Keys.JUMP, false));
-    }
-
-    public void fireReleased() {
-        keys.get(keys.put(Keys.HIT, false));
-    }
-*/
-
-
-
 
 }
 

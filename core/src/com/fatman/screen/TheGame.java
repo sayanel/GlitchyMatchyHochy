@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -29,7 +30,8 @@ public class TheGame extends ApplicationAdapter {
 
 
 	///////////////////////////BATCH
-	private SpriteBatch m_batch;
+	private SpriteBatch m_camera_batch;
+	private SpriteBatch m_interface_batch;
 
 
 	///////////////////////////LEVEL
@@ -39,6 +41,8 @@ public class TheGame extends ApplicationAdapter {
 	private TileSet m_tile_set;
 	private TileSet m_tile_set_object;
 	private TileSet m_game_object_sprite;
+	private TileSet m_interface_sprite;
+	private Texture m_interface_texture;
 	private Texture m_tile_set_texture;
 	private Texture m_tile_set_texture_object;
 	private Texture m_game_object_sprite_texture;
@@ -51,6 +55,7 @@ public class TheGame extends ApplicationAdapter {
 	private Player m_player;
 	private PlayerController m_playerController;
 	private PlayerDrawer m_playerDrawer;
+	private PlayerInterfaceDrawer m_player_interface_drawer;
 	private Texture m_texturePlayer;
 
 	////////////////////////CAMERA
@@ -67,7 +72,8 @@ public class TheGame extends ApplicationAdapter {
 	public void create () {
 
 		///////////////////////////BATCH
-		m_batch = new SpriteBatch();
+		m_camera_batch = new SpriteBatch();
+		m_interface_batch = new SpriteBatch();
 
 		///////////////////////////LEVEL
 		m_tile_set_texture = new Texture(Gdx.files.internal("tileset/street_tile.png"));
@@ -81,10 +87,10 @@ public class TheGame extends ApplicationAdapter {
 		m_level_drawer = new LevelDrawer();
 		m_level = new Level("patterns/", new ArrayList<LevelModule>(), m_level_drawer);
 
-		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_batch)));
+		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_camera_batch)));
 		for(int i = 0; i < 3; ++i){
 			double position = m_level.peek().getPosition() + m_level.peek().getWidth();
-			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_batch)));
+			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_camera_batch)));
 		}
 
 		m_level.notifyChanges();
@@ -101,8 +107,15 @@ public class TheGame extends ApplicationAdapter {
 
 		///////////////////////////PLAYER
 		m_texturePlayer = new Texture(Gdx.files.internal("tileset/fatboy_sprite.png"));
-		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer, m_tile_set.getWidth(), m_tile_set.getHeight());
-		m_player = new Player(m_playerDrawer);
+		m_interface_texture = new Texture(Gdx.files.internal("tileset/interface_sprite.png"));
+
+		m_interface_sprite = new TileSet(m_interface_texture, 256, 256);
+
+		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayer, m_tile_set.getWidth(), m_tile_set.getHeight());
+
+		m_player_interface_drawer = new PlayerInterfaceDrawer(m_interface_sprite, m_interface_batch);
+
+		m_player = new Player(m_playerDrawer, m_player_interface_drawer);
 		m_playerController = new PlayerController(m_player);
 		m_player.notifyChanges();
 
@@ -123,7 +136,7 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		moveCamera(m_player.getPosition().x * 64, CAMERA_HEIGHT / 2);
-		m_batch.setProjectionMatrix(m_camera.combined);
+		m_camera_batch.setProjectionMatrix(m_camera.combined);
 
 		BitmapFont bitmapFont = new BitmapFont();
 		m_playerController.eventHandler();
@@ -136,19 +149,20 @@ public class TheGame extends ApplicationAdapter {
 		///////////////////////////////////BACKGROUND
 		m_background.draw(0.05f);
 
-		m_batch.begin();
-
+		m_camera_batch.begin();
 			///////////////////////////////LEVEL
 			m_level_drawer.draw();
-			//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
-			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
-			bitmapFont.draw(m_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
-			bitmapFont.draw(m_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
-
 			///////////////////////////////PLAYER
 			m_playerDrawer.draw();
+		m_camera_batch.end();
 
-		m_batch.end();
+		m_interface_batch.begin();
+//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
+//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
+
+			m_player_interface_drawer.draw();
+
+		m_interface_batch.end();
 
 
 	}

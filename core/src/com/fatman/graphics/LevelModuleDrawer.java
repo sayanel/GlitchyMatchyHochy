@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class LevelModuleDrawer implements Drawer{
 
+    //============================ ATTRIBUTES ============================//
+
     private TileSet m_tile_set;
     private TileSet m_tile_set_object;
     private TileSet m_game_object_sprite;
@@ -29,19 +31,7 @@ public class LevelModuleDrawer implements Drawer{
 
     private ArrayList<GameObject> m_game_objects;
 
-
-
-    //TO DO :
-    //- ajouter les attributs qui vont régir le dessin
-
-    public LevelModuleDrawer(TileSet tileSet, TileSet gameObjectSprite, SpriteBatch batch){
-        m_tile_set = tileSet;
-        m_game_object_sprite = gameObjectSprite;
-        m_batch = batch;
-        m_scene_data = null;
-        m_object_data = null;
-        m_game_objects = null;
-    }
+    //============================= METHODS ==============================//
 
     public LevelModuleDrawer(TileSet tileSet, TileSet tileSetObject, TileSet gameObjectSprite, SpriteBatch batch){
         m_tile_set = tileSet;
