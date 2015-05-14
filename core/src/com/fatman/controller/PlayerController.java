@@ -47,6 +47,7 @@ public class PlayerController implements Controller{
         ///////JUMP
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && m_player.getState() == Player.State.JUMPING){
             if(m_player.getState() != Player.State.DOUBLEJUMP) m_player.doublejump();
+            m_player.playProutSound();
         }
 
 

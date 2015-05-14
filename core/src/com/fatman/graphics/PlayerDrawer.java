@@ -5,6 +5,7 @@ package com.fatman.graphics;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,6 +23,7 @@ public class PlayerDrawer implements Drawer {
     private int m_height;
     private int m_width;
     private Player.State m_state;
+    private int m_fat_state;
 
     private int m_tile_width;
     private int m_tile_height;
@@ -29,10 +31,20 @@ public class PlayerDrawer implements Drawer {
 
 
     /////////ANIMATION & TEXTURE .
-    private Animation m_playerRunAnimation;
-    private Animation m_playerJumpAnimation;
+    private Animation m_playerRunAnimation1;
+    private Animation m_playerRunAnimation2;
+    private Animation m_playerRunAnimation3;
+    private Animation m_playerJumpAnimation1;
+    private Animation m_playerJumpAnimation1_prout;
+    private Animation m_playerJumpAnimation2;
+    private Animation m_playerJumpAnimation2_prout;
+    private Animation m_playerJumpAnimation3;
+    private Animation m_playerJumpAnimation3_prout;
 
-    private int m_currentTimeJump;
+    /////////SOUND
+    Sound m_prout_sound;
+    Sound m_souffle_sound;
+
 
 
     private float m_elapsedTime = 0;
@@ -40,16 +52,38 @@ public class PlayerDrawer implements Drawer {
 
 
     //******************** * CONSTRUCTORS * ********************//
-    public PlayerDrawer(SpriteBatch batch, Texture texturePlayer, int tileWidth, int tileHeight) {
+    public PlayerDrawer(SpriteBatch batch, Texture texturePlayerRun, Texture texturePlayerJump, int tileWidth, int tileHeight) {
         m_batch = batch;
 
         setTileWidth(tileWidth);
         setTileHeight(tileHeight);
 
-        TextureRegion[] split = new TextureRegion(texturePlayer).split(128, 128)[0];
-        m_playerRunAnimation = new Animation(0.06f, split);
-        //split = new TextureRegion(texturePlayer).split(128, 128)[0];
-        m_playerJumpAnimation = new Animation(0.06f, split);
+        ///////RUN
+        TextureRegion[] split = new TextureRegion(texturePlayerRun).split(128, 128)[0];
+        m_playerRunAnimation1 = new Animation(0.06f, split);
+        split = new TextureRegion(texturePlayerRun).split(128, 128)[1];
+        m_playerRunAnimation2 = new Animation(0.06f, split);
+        split = new TextureRegion(texturePlayerRun).split(128, 128)[2];
+        m_playerRunAnimation3 = new Animation(0.06f, split);
+
+        //////JUMP NORMAL
+        split = new TextureRegion(texturePlayerJump).split(128, 128)[0];
+        m_playerJumpAnimation1 = new Animation(0.06f, split);
+        split = new TextureRegion(texturePlayerJump).split(128, 128)[2];
+        m_playerJumpAnimation2 = new Animation(0.06f, split);
+        split = new TextureRegion(texturePlayerJump).split(128, 128)[4];
+        m_playerJumpAnimation3 = new Animation(0.06f, split);
+
+        //////JUMP PROUT
+        split = new TextureRegion(texturePlayerJump).split(128, 128)[1];
+        m_playerJumpAnimation1_prout = new Animation(0.06f, split);
+        split = new TextureRegion(texturePlayerJump).split(128, 128)[3];
+        m_playerJumpAnimation2_prout = new Animation(0.06f, split);
+        split = new TextureRegion(texturePlayerJump).split(128, 128)[5];
+        m_playerJumpAnimation3_prout = new Animation(0.06f, split);
+
+
+
     }
 
     //******************** * GETTERS * ********************//
@@ -69,35 +103,41 @@ public class PlayerDrawer implements Drawer {
 
 
     public void drawJump(){
-        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 0) m_batch.draw(m_playerJumpAnimation1.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 1) m_batch.draw(m_playerJumpAnimation2.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 2) m_batch.draw(m_playerJumpAnimation3.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
     }
 
     public void drawDoubleJump(){
-        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 0) m_batch.draw(m_playerJumpAnimation1_prout.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 1) m_batch.draw(m_playerJumpAnimation2_prout.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 2) m_batch.draw(m_playerJumpAnimation3_prout.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+
     }
 
     public void drawPlayerRun(){
-
-        //System.out.println("DRAW RUN");
-
-        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
-
+        if(m_fat_state == 0) m_batch.draw(m_playerRunAnimation1.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 1) m_batch.draw(m_playerRunAnimation2.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        if(m_fat_state == 2) m_batch.draw(m_playerRunAnimation3.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
     }
 
 
     //DRAWER METHODS
     public void draw() {
-        m_elapsedTime += Gdx.graphics.getDeltaTime();
+
 
         if(m_state == Player.State.RUNNING){
+            m_elapsedTime += Gdx.graphics.getDeltaTime()/1;
             drawPlayerRun();
         }
 
         if(m_state == Player.State.DOUBLEJUMP) {
+            m_elapsedTime += Gdx.graphics.getDeltaTime()/2;
             drawDoubleJump();
         }
 
         if(m_state == Player.State.JUMPING) {
+            m_elapsedTime += Gdx.graphics.getDeltaTime()/2;
             drawJump();
         }
 
@@ -113,5 +153,6 @@ public class PlayerDrawer implements Drawer {
         m_width = player.getWidth();
         m_height = player.getHeight();
         m_state = player.getState();
+        m_fat_state = player.getFatState();
     }
 }

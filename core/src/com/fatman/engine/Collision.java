@@ -8,7 +8,6 @@
 package com.fatman.engine;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.fatman.graphics.LevelModuleDrawer;
 
 import java.util.ArrayList;
 
@@ -18,12 +17,15 @@ public class Collision {
 
     }
 
+    //recupere toutes les collisions
     public void collisionHandler(Player player, LevelModule levelModule){
+        //get les collisions avec les RandomGameObject
         GameObject.GameObjectType collisionType = getGameObjectCollision(player, levelModule.getGameObjectList());
 
         switch(collisionType){
             case ENNEMY:
                 player.enlarge();
+                player.playerMiamSound();
                 break;
             case BONUS:
 
@@ -31,11 +33,13 @@ public class Collision {
             default:
         }
 
+        //stock les collisions avec les ObjectPattern
         ArrayList<Integer> listOfObject = getObjectPatternCollision(player, levelModule);
 
         for(int object : listOfObject) {
             if(object == 1){
                 player.addPills(1);
+                player.playPillsSound();
             }
         }
 

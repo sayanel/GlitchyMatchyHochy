@@ -2,6 +2,7 @@
 package com.fatman.engine;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.fatman.controller.Controllable;
@@ -32,6 +33,8 @@ public class Player implements Drawable, Controllable {
 
     private State       m_state;
 
+    private int m_fat_state;
+
     private int         m_weight;
     private int         m_pills_number;
 
@@ -52,6 +55,11 @@ public class Player implements Drawable, Controllable {
 
     private Drawer m_drawer;
 
+        /////////////////SOUND
+    private Sound m_prout_sound;
+    private Sound m_pills_sound;
+    private Sound m_miam_sound;
+
 
     //******************** * CONSTRUCTORS * ********************//
 
@@ -62,7 +70,7 @@ public class Player implements Drawable, Controllable {
         this.m_velocity = new Vector2(RUN_BEGIN,0);
         this.m_acceleration = new Vector2(0.05f,0);
         this.m_height = 2;
-
+        m_fat_state = 0;
         m_jump_height = 15f;
         m_doublejump_height = 9f;
 
@@ -74,6 +82,11 @@ public class Player implements Drawable, Controllable {
         this.m_bounds.width = this.m_width;
         m_state = State.RUNNING;
 
+        ///////////SOUND
+        m_prout_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Explosion.wav"));
+        m_pills_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Blip_Select.wav"));
+        m_miam_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Randomize.wav"));
+
         setDrawer(drawer);
         notifyChanges();
     }
@@ -84,10 +97,11 @@ public class Player implements Drawable, Controllable {
     public int getWidth(){return m_width;}
     public int getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
-    public Vector2 getAcceleraztion(){return m_acceleration;}
+    public Vector2 getAcceleration(){return m_acceleration;}
     public Vector2 getVelocity(){return m_velocity;}
     public State getState(){return m_state;}
     public float getRun_delta(){ return m_run_delta; }
+    public int getFatState() { return m_fat_state; }
 
 
     //******************** * SETTERS * ********************//
@@ -97,6 +111,17 @@ public class Player implements Drawable, Controllable {
     }
 
     //******************** * FUNCTIONS * ********************//
+
+    public void playProutSound(){
+        m_prout_sound.play(1.0f);
+    }
+    public void playPillsSound(){
+        //m_pills_sound.play(1.0f);
+    }
+    public void playerMiamSound(){
+        m_miam_sound.play(1.0f);
+    }
+
     public void run(){
         setState(State.RUNNING);
     }
@@ -152,10 +177,19 @@ public class Player implements Drawable, Controllable {
         }
     }
 
+
+    public void changeFatState(){
+        if(m_weight <  MAX_WEIGHT/3) m_fat_state = 0;
+        else if(m_weight  < MAX_WEIGHT-MAX_WEIGHT/3) m_fat_state = 1;
+        else m_fat_state = 2;
+    }
+
     public void enlarge(){
         m_weight += 10;
 
         m_run_delta *= 0.5;
+
+        changeFatState();
 
         m_jump_height -= JUMP_PENALITY;
         m_doublejump_height -= DOUBLEJUMP_PENALITY;
@@ -165,6 +199,9 @@ public class Player implements Drawable, Controllable {
     }
 
     public void slim(){
+
+        changeFatState();
+
         if(m_pills_number >= PILLS_REQUIRED){
 
             if(m_weight > 0){
@@ -172,6 +209,7 @@ public class Player implements Drawable, Controllable {
                 m_run_delta *= 2;
                 m_weight -= 10;
                 m_jump_height += JUMP_PENALITY;
+                m_doublejump_height += DOUBLEJUMP_PENALITY;
             }
             else{
                 m_weight = 0;
@@ -215,7 +253,11 @@ public class Player implements Drawable, Controllable {
         m_drawer.update(this);
     }
 
-
+public void dispose(){
+    m_prout_sound.dispose();
+    m_pills_sound.dispose();
+    m_miam_sound.dispose();
+}
 
 
     //CONTROLLABLE METHODS

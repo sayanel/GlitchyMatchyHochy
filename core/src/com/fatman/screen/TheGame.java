@@ -52,7 +52,8 @@ public class TheGame extends ApplicationAdapter {
 	private Player m_player;
 	private PlayerController m_playerController;
 	private PlayerDrawer m_playerDrawer;
-	private Texture m_texturePlayer;
+	private Texture m_texturePlayerRun;
+	private Texture m_texturePlayerJump;
 
 	////////////////////////CAMERA
 	private static final float CAMERA_WIDTH = (float) GAME_WIDTH;
@@ -64,9 +65,9 @@ public class TheGame extends ApplicationAdapter {
 	///////////////////////////COLLISION
 	Collision col;
 
-
 	///////////////////////////AUDIO
-	Sound m_sound;
+	Sound m_global_sound;
+
 
 
 	@Override
@@ -106,8 +107,9 @@ public class TheGame extends ApplicationAdapter {
 
 
 		///////////////////////////PLAYER
-		m_texturePlayer = new Texture(Gdx.files.internal("tileset/fatboy_sprite.png"));
-		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayer, m_tile_set.getWidth(), m_tile_set.getHeight());
+		m_texturePlayerRun = new Texture(Gdx.files.internal("tileset/larry-run.png"));
+		m_texturePlayerJump = new Texture(Gdx.files.internal("tileset/larry-jump.png"));
+		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayerRun, m_texturePlayerJump, m_tile_set.getWidth(), m_tile_set.getHeight());
 		m_player = new Player(m_playerDrawer);
 		m_playerController = new PlayerController(m_player);
 		m_player.notifyChanges();
@@ -123,8 +125,9 @@ public class TheGame extends ApplicationAdapter {
 		col = new Collision();
 
 		///////////////////////////SOUND
-		m_sound = Gdx.audio.newSound(Gdx.files.internal("audio/dailybeetle.mp3"));
-		m_sound.play(1.0f);
+		m_global_sound = Gdx.audio.newSound(Gdx.files.internal("audio/wario01.mp3"));
+
+		m_global_sound.play(1.0f);
 
 
 	}
@@ -138,7 +141,10 @@ public class TheGame extends ApplicationAdapter {
 		//if(m_player.getPosition().y * 64 > GAME_HEIGHT - GAME_HEIGHT /3 ) m_move_camera_y =  CAMERA_HEIGHT / 2 + m_player.getPosition().y * 5;
 		//else if( m_move_camera_y < CAMERA_HEIGHT / 2) m_move_camera_y -=  m_player.getPosition().y *5;
 		//if( m_move_camera_y < CAMERA_HEIGHT / 2) m_move_camera_y = CAMERA_HEIGHT / 2;
-		m_move_camera_y = CAMERA_HEIGHT / 2;
+		if(m_player.getState() == Player.State.DOUBLEJUMP){
+			if(m_move_camera_y >= CAMERA_HEIGHT / 2) m_move_camera_y = m_player.getPosition().y * 64;
+		}
+		else m_move_camera_y = CAMERA_HEIGHT / 2;
 
 		moveCamera(m_player.getPosition().x * 64, m_move_camera_y);
 		m_batch.setProjectionMatrix(m_camera.combined);
@@ -165,16 +171,20 @@ public class TheGame extends ApplicationAdapter {
 
 			///////////////////////////////LEVEL
 			m_level_drawer.draw();
+
 			//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
 			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
+
 			bitmapFont.draw(m_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
 			bitmapFont.draw(m_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
-			bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
-			bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
-			bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64, 330);
-			bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64, 310);
+			//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
+			//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
+			//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64, 330);
+			//bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64, 310);
+			//bitmapFont.draw(m_batch, "m_fat_state : " + Double.toString(m_player.getFatState()), m_player.getPosition().x * 64, 290);
 			Player.State state = m_player.getState();
-			bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
+			//bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
+
 
 			///////////////////////////////PLAYER
 			m_playerDrawer.draw();
@@ -186,7 +196,9 @@ public class TheGame extends ApplicationAdapter {
 
 	@Override
 	public void dispose(){
-		m_texturePlayer.dispose();
+		m_texturePlayerRun.dispose();
+		m_texturePlayerJump.dispose();
+		m_player.dispose();
 	}
 
 	public void moveCamera(float x, float y){
