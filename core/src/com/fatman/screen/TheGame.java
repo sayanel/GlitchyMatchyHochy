@@ -2,6 +2,7 @@ package com.fatman.screen;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,11 +57,16 @@ public class TheGame extends ApplicationAdapter {
 	////////////////////////CAMERA
 	private static final float CAMERA_WIDTH = (float) GAME_WIDTH;
 	private static final float CAMERA_HEIGHT = (float) GAME_HEIGHT;
+	float m_move_camera_y;
 
 	private OrthographicCamera m_camera;
 
 	///////////////////////////COLLISION
 	Collision col;
+
+
+	///////////////////////////AUDIO
+	Sound m_sound;
 
 
 	@Override
@@ -108,11 +114,18 @@ public class TheGame extends ApplicationAdapter {
 
 		///////////////////////////CAMERA
 		this.m_camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-		this.m_camera.setToOrtho(false,CAMERA_WIDTH,CAMERA_HEIGHT);
+		this.m_camera.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT);
 		this.m_camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, m_player.getPosition().x * 64);
+		this.m_move_camera_y = CAMERA_HEIGHT / 2;
+
 
 		///////////////////////////COLLISION
 		col = new Collision();
+
+		///////////////////////////SOUND
+		m_sound = Gdx.audio.newSound(Gdx.files.internal("audio/dailybeetle.mp3"));
+		m_sound.play(1.0f);
+
 
 	}
 
@@ -122,7 +135,12 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		moveCamera(m_player.getPosition().x * 64, CAMERA_HEIGHT / 2);
+		//if(m_player.getPosition().y * 64 > GAME_HEIGHT - GAME_HEIGHT /3 ) m_move_camera_y =  CAMERA_HEIGHT / 2 + m_player.getPosition().y * 5;
+		//else if( m_move_camera_y < CAMERA_HEIGHT / 2) m_move_camera_y -=  m_player.getPosition().y *5;
+		//if( m_move_camera_y < CAMERA_HEIGHT / 2) m_move_camera_y = CAMERA_HEIGHT / 2;
+		m_move_camera_y = CAMERA_HEIGHT / 2;
+
+		moveCamera(m_player.getPosition().x * 64, m_move_camera_y);
 		m_batch.setProjectionMatrix(m_camera.combined);
 
 		BitmapFont bitmapFont = new BitmapFont();
@@ -134,7 +152,14 @@ public class TheGame extends ApplicationAdapter {
 		m_level.checkPlayerPosition(m_player.getPosition().x);
 
 		///////////////////////////////////BACKGROUND
-		m_background.draw(0.05f);
+		if(m_player.getState() != Player.State.DEAD)
+			m_background.draw(0.05f, m_player.getRun_delta()*5000);
+		else
+			m_background.draw(0.0f, 0);
+
+
+		///////////////////////////////////SOUND
+
 
 		m_batch.begin();
 
@@ -144,6 +169,12 @@ public class TheGame extends ApplicationAdapter {
 			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
 			bitmapFont.draw(m_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
 			bitmapFont.draw(m_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
+			bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
+			bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
+			bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64, 330);
+			bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64, 310);
+			Player.State state = m_player.getState();
+			bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
 
 			///////////////////////////////PLAYER
 			m_playerDrawer.draw();

@@ -28,7 +28,16 @@ public class ParallaxBackground {
         batch = new SpriteBatch();
     }
 
-    public void draw(float delta){
+    public Vector2 getSpeed(){
+        return speed;
+    }
+
+    public void setSpeed(Vector2 new_speed){
+        this.speed = new_speed;
+    }
+
+    public void draw(float delta, float run_delta){
+        this.speed.x += run_delta;
         this.camera.position.add(speed.x*delta,speed.y*delta, 0);
         for(ParallaxLayer layer:layers){
             batch.setProjectionMatrix(camera.projection);

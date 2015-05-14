@@ -14,11 +14,13 @@ public class Player implements Drawable, Controllable {
 
 
     public enum State {
-        IDLE, WALKING, RUNNING, JUMPING, DEAD
+        IDLE, WALKING, RUNNING, JUMPING, DOUBLEJUMP, DEAD
     }
 
-    static final float  JUMP_DELTA = 0.6f;
+    static final float  JUMP_DELTA = 0.5f;
+    static final float  DOUBLEJUMP_DELTA = 0.25f;
     static final float  JUMP_PENALITY = 0.3f;
+    static final float  DOUBLEJUMP_PENALITY = 0.5f;
 
     static final int    MAX_WEIGHT = 100;
     static final int    PILLS_REQUIRED = 10;
@@ -36,6 +38,7 @@ public class Player implements Drawable, Controllable {
     private float       m_run_delta;
 
     private float       m_jump_height;
+    private float       m_doublejump_height;
 
     private float       m_elapsed_time;
 
@@ -61,6 +64,7 @@ public class Player implements Drawable, Controllable {
         this.m_height = 2;
 
         m_jump_height = 15f;
+        m_doublejump_height = 9f;
 
         m_run_delta = INITIAL_RUN_DELTA;
 
@@ -80,8 +84,10 @@ public class Player implements Drawable, Controllable {
     public int getWidth(){return m_width;}
     public int getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
+    public Vector2 getAcceleraztion(){return m_acceleration;}
     public Vector2 getVelocity(){return m_velocity;}
     public State getState(){return m_state;}
+    public float getRun_delta(){ return m_run_delta; }
 
 
     //******************** * SETTERS * ********************//
@@ -113,9 +119,29 @@ public class Player implements Drawable, Controllable {
         }
     }
 
+    public void doublejump(){
+        if(getState() != State.DOUBLEJUMP) {
+            setState(State.DOUBLEJUMP);
+            m_velocity.y = m_doublejump_height;
+        }
+    }
+
     public void updateJump(){
 
         m_velocity.y -= JUMP_DELTA;
+
+        float temp_position = m_position.y + m_velocity.y * Gdx.graphics.getDeltaTime();
+
+        if(temp_position < 1 && m_velocity.y <= 0){
+            setState(State.RUNNING);
+            m_velocity.y = 0;
+            m_position.y = 1;
+        }
+    }
+
+    public void updateDoubleJump(){
+
+        m_velocity.y -= DOUBLEJUMP_DELTA;
 
         float temp_position = m_position.y + m_velocity.y * Gdx.graphics.getDeltaTime();
 
@@ -132,6 +158,7 @@ public class Player implements Drawable, Controllable {
         m_run_delta *= 0.5;
 
         m_jump_height -= JUMP_PENALITY;
+        m_doublejump_height -= DOUBLEJUMP_PENALITY;
         if(m_weight > MAX_WEIGHT){
             die();
         }
@@ -199,6 +226,9 @@ public class Player implements Drawable, Controllable {
 
         if(m_state == State.JUMPING){
             updateJump();
+        }
+        if(m_state == State.DOUBLEJUMP){
+            updateDoubleJump();
         }
         if(m_state == State.RUNNING){
             updateRun();

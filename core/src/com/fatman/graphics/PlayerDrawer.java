@@ -72,6 +72,10 @@ public class PlayerDrawer implements Drawer {
         m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
     }
 
+    public void drawDoubleJump(){
+        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+    }
+
     public void drawPlayerRun(){
 
         //System.out.println("DRAW RUN");
@@ -87,6 +91,10 @@ public class PlayerDrawer implements Drawer {
 
         if(m_state == Player.State.RUNNING){
             drawPlayerRun();
+        }
+
+        if(m_state == Player.State.DOUBLEJUMP) {
+            drawDoubleJump();
         }
 
         if(m_state == Player.State.JUMPING) {
