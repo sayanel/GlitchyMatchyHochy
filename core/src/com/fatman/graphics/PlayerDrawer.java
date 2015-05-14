@@ -69,22 +69,7 @@ public class PlayerDrawer implements Drawer {
 
 
     public void drawJump(){
-        //System.out.println("DRAW JUMP");
-
-        double jump = 0.0;
-        if(m_currentTimeJump >= 50){ jump = 0.1f; }
-        else if(m_currentTimeJump > 40){ jump = 0.06f; }
-        else if(m_currentTimeJump > 32){ jump = 0.02f; }
-        else if(m_currentTimeJump > 26){ jump = 0.0f; }
-        else if(m_currentTimeJump >= 19){ jump = -0.02f; m_position.x += 0.005f; }
-        else if(m_currentTimeJump >= 10){ jump = -0.06f; }
-        else{ jump = -0.1f;}
-
-        //System.out.println("currentTimeJump: " + m_currentTimeJump + " === jump: " + jump + "  ===    y: " + m_position.y);
-
-        float posJump = m_position.y + (float)jump;
-        m_position.y = posJump;
-        m_batch.draw(m_playerJumpAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, posJump * m_tile_height);
+        m_batch.draw(m_playerRunAnimation.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
     }
 
     public void drawPlayerRun(){
@@ -120,6 +105,5 @@ public class PlayerDrawer implements Drawer {
         m_width = player.getWidth();
         m_height = player.getHeight();
         m_state = player.getState();
-        m_currentTimeJump = player.getCurrentTimeJump();
     }
 }

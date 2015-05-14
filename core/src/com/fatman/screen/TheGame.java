@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -124,7 +125,7 @@ public class TheGame extends ApplicationAdapter {
 		moveCamera(m_player.getPosition().x * 64, CAMERA_HEIGHT / 2);
 		m_batch.setProjectionMatrix(m_camera.combined);
 
-		//BitmapFont bitmapFont = new BitmapFont();
+		BitmapFont bitmapFont = new BitmapFont();
 		m_playerController.eventHandler();
 		m_player.update(m_playerController);
 
@@ -141,6 +142,8 @@ public class TheGame extends ApplicationAdapter {
 			m_level_drawer.draw();
 			//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
 			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
+			bitmapFont.draw(m_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
+			bitmapFont.draw(m_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
 
 			///////////////////////////////PLAYER
 			m_playerDrawer.draw();

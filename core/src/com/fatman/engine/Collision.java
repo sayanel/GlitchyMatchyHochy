@@ -21,21 +21,23 @@ public class Collision {
     public void collisionHandler(Player player, LevelModule levelModule){
         GameObject.GameObjectType collisionType = getGameObjectCollision(player, levelModule.getGameObjectList());
 
-        ArrayList<Integer> listOfObject = getObjectPatternCollision(player, levelModule);
-
         switch(collisionType){
             case ENNEMY:
-//                System.out.println("COLLISION ENNEMY");
+                player.enlarge();
                 break;
             case BONUS:
-//                System.out.println("COLLISION BONUS");
+
                 break;
             default:
         }
 
-//        for(int i=0;i<listOfObject.size();i++) {
-//            System.out.print("COLLISION WITH : " + listOfObject.get(i));
-//        }
+        ArrayList<Integer> listOfObject = getObjectPatternCollision(player, levelModule);
+
+        for(int object : listOfObject) {
+            if(object == 1){
+                player.addPills(1);
+            }
+        }
 
     }
 
@@ -61,7 +63,6 @@ public class Collision {
         double posPlayerRelx = player.getPosition().x - module.getPosition();
         double posPlayerRely = player.getPosition().y;
 
-
         //Liste contenant toutes les valeurs int des cases avec lesquels le joueur est entré en collision
         ArrayList<Integer> listOfObject = new ArrayList<Integer>();
 
@@ -72,15 +73,8 @@ public class Collision {
                 Rectangle objectPatternBound = genTileBounds(module.getObjectPattern().getHeight() - i - 1, j);
 
                 if(playerBounds.overlaps(objectPatternBound) && module.getObjectPattern().getData()[i][j] > 0) {
-                    System.out.println("Collide in :");
-
                     listOfObject.add(module.getObjectPattern().getData()[i][j]); //On a touché ce qu'il y avait en (i,j) donc on l'ajoute
-
-                    System.out.println("PlayerCoord : " + player.getPosition());
-                    System.out.println("PlayerCoordRelative : " + posPlayerRelx + ", " + posPlayerRely);
-                    System.out.println("tileCoord : " + i + ", " + j);
-
-                    module.getObjectPattern().setData(i, j, 0);
+                    module.getObjectPattern().setData(i, j, 0); //Puisque on a touché ce qu'il y avait en i,j, on met sa valeur à 0 (=rien)
                 }
             }
         }

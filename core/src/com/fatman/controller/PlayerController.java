@@ -49,6 +49,10 @@ public class PlayerController implements Controller{
             if(m_player.getState() != Player.State.JUMPING) m_player.jump();
         }
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
+            m_player.slim();
+        }
+
         ///////HIT
         if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)){
             m_player.hit();
