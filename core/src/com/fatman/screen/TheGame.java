@@ -2,6 +2,7 @@ package com.fatman.screen;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -77,10 +78,10 @@ public class TheGame extends ApplicationAdapter {
 	private OrthographicCamera m_camera;
 
 	///////////////////////////COLLISION
-	Collision col;
+	private Collision col;
 
 	///////////////////////////AUDIO
-	Sound m_global_sound;
+	private Sound m_global_sound;
 
 
 
@@ -138,10 +139,8 @@ public class TheGame extends ApplicationAdapter {
 		///////////////////////////PLAYER
 		m_texturePlayerRun = new Texture(Gdx.files.internal("tileset/larry-run.png"));
 		m_texturePlayerJump = new Texture(Gdx.files.internal("tileset/larry-jump.png"));
-		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayerRun, m_texturePlayerJump, m_tile_set.getWidth(), m_tile_set.getHeight());
-		m_player = new Player(m_playerDrawer);
-		
-		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayerRun, m_tile_set.getWidth(), m_tile_set.getHeight());
+
+		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayerRun, m_texturePlayerJump, m_tile_set.getWidth(), m_tile_set.getHeight());
 
 		m_player = new Player(m_playerDrawer, m_player_interface_drawer);
 		m_playerController = new PlayerController(m_player);
@@ -191,7 +190,6 @@ public class TheGame extends ApplicationAdapter {
 
 
 
-		m_batch.begin();
 
 		m_camera_batch.begin();
 			///////////////////////////////LEVEL
@@ -200,8 +198,8 @@ public class TheGame extends ApplicationAdapter {
 			//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
 			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
 
-			bitmapFont.draw(m_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
-			bitmapFont.draw(m_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
+			bitmapFont.draw(m_camera_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
+			bitmapFont.draw(m_camera_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
 			//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
 			//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
 			//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64 + 200, 330);
@@ -230,7 +228,6 @@ public class TheGame extends ApplicationAdapter {
 	public void dispose(){
 		m_texturePlayerRun.dispose();
 		m_texturePlayerJump.dispose();
-		m_player.dispose();
 	}
 
 
