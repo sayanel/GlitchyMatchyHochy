@@ -31,7 +31,7 @@ public class Player implements Drawable, Controllable {
     static final float  JUMP_PENALITY = 0.3f;
     static final float  DOUBLEJUMP_PENALITY = 0.5f;
 
-    static final int    MAX_WEIGHT = 10;
+    static final int    MAX_WEIGHT = 100;
     static final int    PILLS_REQUIRED = 10;
 
     static final float  RUN_BEGIN = 5f;
@@ -202,7 +202,7 @@ public class Player implements Drawable, Controllable {
     }
 
     public void updateRun(){
-        m_velocity.x += m_elapsed_time * m_run_delta;
+        m_velocity.x += m_elapsed_time * m_run_delta * 18;
     }
 
     public void accelerate(){

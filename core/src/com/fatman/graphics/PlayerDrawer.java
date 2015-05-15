@@ -127,7 +127,7 @@ public class PlayerDrawer implements Drawer {
     }
 
     public void drawPlayerDie(){
-        int kf = 0; int v = 30;
+       /*int kf = 0; int v = 25;
         if(m_isAlreadyDead < 1*v) kf = 0;
         else if(m_isAlreadyDead < 2*v) kf = 1;
         else if(m_isAlreadyDead < 3*v) kf = 2;
@@ -137,17 +137,18 @@ public class PlayerDrawer implements Drawer {
         else if(m_isAlreadyDead < 7*v) kf = 6;
         else if(m_isAlreadyDead < 8*v) kf = 7;
         else if(m_isAlreadyDead < 9*v) kf = 8;
-        else if(m_isAlreadyDead < 10*v) kf = 9;
+        else kf = 9;
+        */
 
-        //m_batch.draw(m_playerDie.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
-        System.out.println(kf);
-        m_batch.draw(m_playerDie.getKeyFrame(kf), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        m_batch.draw(m_playerDie.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+
+        //m_batch.draw(m_playerDie.getKeyFrame(5), m_position.x * m_tile_width, m_position.y * m_tile_height);
         m_isAlreadyDead ++;
     }
 
     public void drawDeadPlayer(){
         m_batch.draw(m_playerDie.getKeyFrame(9), m_position.x * m_tile_width, m_position.y * m_tile_height);
-        System.out.println("DEAD 9");
+
     }
 
 
@@ -172,8 +173,9 @@ public class PlayerDrawer implements Drawer {
 
         if(m_state == Player.State.DEAD){
             m_elapsedTime += Gdx.graphics.getDeltaTime()/2;
+            System.out.println(m_elapsedTime);
            // if(m_isAlreadyDead < 65) drawPlayerDie();
-            if(m_isAlreadyDead < 301) drawPlayerDie();
+            if(m_isAlreadyDead < 26) drawPlayerDie();
             else drawDeadPlayer();
         }
 
