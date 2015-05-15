@@ -202,7 +202,7 @@ public class Player implements Drawable, Controllable {
     }
 
     public void updateRun(){
-        m_velocity.x += m_elapsed_time * m_run_delta;
+        m_velocity.x += m_elapsed_time * m_run_delta * 18;
     }
 
     public void accelerate(){
