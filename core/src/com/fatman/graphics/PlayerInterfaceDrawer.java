@@ -11,13 +11,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fatman.engine.Player;
+import com.fatman.screen.TheGame;
 
 public class PlayerInterfaceDrawer implements Drawer{
 
     //============================ ATTRIBUTES ============================//
     private SpriteBatch m_batch;
 
-    private TileSet m_interface_sprite;
+    private TileSet m_stomach_sprite;
+    private TileSet m_pill_can_sprite;
+    private TileSet m_pill_button_sprite;
+    private TileSet m_pause_button_sprite;
 
     private int m_pills_number;
     private int m_weight;
@@ -26,22 +30,49 @@ public class PlayerInterfaceDrawer implements Drawer{
 
     //============================= METHODS ==============================//
 
-    public PlayerInterfaceDrawer(TileSet interface_sprite, SpriteBatch interface_batch){
+    public PlayerInterfaceDrawer(TileSet stomach_sprite, TileSet pill_can_sprite, TileSet pill_button_sprite, TileSet pause_button_sprite, SpriteBatch interface_batch){
         m_batch = interface_batch;
-        m_interface_sprite = interface_sprite;
+
+        m_stomach_sprite = stomach_sprite;
+        m_pill_can_sprite = pill_can_sprite;
+        m_pill_button_sprite = pill_button_sprite;
+        m_pause_button_sprite = pause_button_sprite;
+
         m_bitmap_font = new BitmapFont(Gdx.files.internal("fonts/pills_nb.fnt"));
+
         m_pills_number = 0;
         m_weight = 0;
     }
 
     @Override
     public void draw() {
-        m_interface_sprite.getTile(((int) (m_weight * 0.1))).setOrigin(0, 0);
-        m_interface_sprite.getTile(((int) (m_weight * 0.1))).setScale(0.5f);
-        m_interface_sprite.getTile(((int) (m_weight * 0.1))).setPosition(690,340);
-        m_interface_sprite.getTile(((int) (m_weight * 0.1))).draw(m_batch);
 
-        m_bitmap_font.drawWrapped(m_batch, "x " + m_pills_number, 20f, 400f, 0f);
+        //STOMACH
+        m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setOrigin(0, 0);
+        m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setScale(0.5f);
+        m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setPosition(TheGame.GAME_WIDTH - 128,TheGame.GAME_HEIGHT - 128 - 20);
+        m_stomach_sprite.getTile(((int) (m_weight * 0.1))).draw(m_batch);
+
+        //PAUSE BUTTON
+        m_pause_button_sprite.getTile(0).setOrigin(0, 0);
+        m_pause_button_sprite.getTile(0).setScale(1f);
+        m_pause_button_sprite.getTile(0).setPosition(20, TheGame.GAME_HEIGHT - 64 - 20);
+        m_pause_button_sprite.getTile(0).draw(m_batch);
+
+        //PILLS_BUTTON
+        m_pill_button_sprite.getTile(0).setOrigin(0, 0);
+        m_pill_button_sprite.getTile(0).setScale(0.75f);
+        m_pill_button_sprite.getTile(0).setPosition(20,20);
+        m_pill_button_sprite.getTile(0).draw(m_batch);
+
+        //PILL CAN
+        m_pill_can_sprite.getTile(0).setOrigin(0, 0);
+        m_pill_can_sprite.getTile(0).setScale(0.5f);
+        m_pill_can_sprite.getTile(0).setPosition(20, 128 - 5);
+        m_pill_can_sprite.getTile(0).draw(m_batch);
+
+        //PILLS NUMBER
+        m_bitmap_font.drawWrapped(m_batch, "x " + m_pills_number, 20 + 32 + 5, 128 + 28 - 5, 0f);
     }
 
     @Override

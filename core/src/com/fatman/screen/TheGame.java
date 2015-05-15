@@ -41,11 +41,25 @@ public class TheGame extends ApplicationAdapter {
 	private TileSet m_tile_set;
 	private TileSet m_tile_set_object;
 	private TileSet m_game_object_sprite;
-	private TileSet m_interface_sprite;
-	private Texture m_interface_texture;
+
+
+
 	private Texture m_tile_set_texture;
 	private Texture m_tile_set_texture_object;
 	private Texture m_game_object_sprite_texture;
+
+	///////////////////////////INTERFACE
+	private TileSet m_stomach_sprite;
+	private Texture m_stomach_texture;
+
+	private TileSet m_pause_button_sprite;
+	private Texture m_pause_button_texture;
+
+	private TileSet m_pill_button_sprite;
+	private Texture m_pill_button_texture;
+
+	private TileSet m_pill_can_sprite;
+	private Texture m_pill_can_texture;
 
 	///////////////////////////BACKGROUND
 	private ParallaxBackground m_background;
@@ -104,16 +118,25 @@ public class TheGame extends ApplicationAdapter {
 				new ParallaxLayer(bg2,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
 		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150,0));
 
+		///////////////////////////INTERFACE
+		m_stomach_texture = new Texture(Gdx.files.internal("tileset/interface_sprite.png"));
+		m_stomach_sprite = new TileSet(m_stomach_texture, 256, 256);
+
+		m_pill_button_texture = new Texture(Gdx.files.internal("tileset/button-eat.png"));
+		m_pill_button_sprite = new TileSet(m_pill_button_texture, 128, 128);
+
+		m_pill_can_texture = new Texture(Gdx.files.internal("tileset/pill-can.png"));
+		m_pill_can_sprite = new TileSet(m_pill_can_texture, 64, 64);
+
+		m_pause_button_texture = new Texture(Gdx.files.internal("tileset/button-pause.png"));
+		m_pause_button_sprite = new TileSet(m_pause_button_texture, 64, 64);
+
+		m_player_interface_drawer = new PlayerInterfaceDrawer(m_stomach_sprite, m_pill_can_sprite, m_pill_button_sprite, m_pause_button_sprite, m_interface_batch);
 
 		///////////////////////////PLAYER
 		m_texturePlayer = new Texture(Gdx.files.internal("tileset/fatboy_sprite.png"));
-		m_interface_texture = new Texture(Gdx.files.internal("tileset/interface_sprite.png"));
-
-		m_interface_sprite = new TileSet(m_interface_texture, 256, 256);
 
 		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayer, m_tile_set.getWidth(), m_tile_set.getHeight());
-
-		m_player_interface_drawer = new PlayerInterfaceDrawer(m_interface_sprite, m_interface_batch);
 
 		m_player = new Player(m_playerDrawer, m_player_interface_drawer);
 		m_playerController = new PlayerController(m_player);
