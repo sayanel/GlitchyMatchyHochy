@@ -157,11 +157,8 @@ public class TheGame extends ApplicationAdapter {
 		col = new Collision();
 
 		///////////////////////////SOUND
-		m_global_sound = Gdx.audio.newSound(Gdx.files.internal("audio/wario01.mp3"));
-
-		m_global_sound.play(1.0f);
-
-
+		m_global_sound = Gdx.audio.newSound(Gdx.files.internal("audio/FATLARRY_LOOP.wav"));
+		m_global_sound.loop();
 	}
 
 	@Override
