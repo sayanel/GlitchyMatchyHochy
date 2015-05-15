@@ -32,6 +32,7 @@ public class TheGame extends ApplicationAdapter {
 	///////////////////////////BATCH
 	private SpriteBatch m_camera_batch;
 	private SpriteBatch m_interface_batch;
+	private SpriteBatch m_screen_batch;
 
 
 	///////////////////////////LEVEL
@@ -70,6 +71,11 @@ public class TheGame extends ApplicationAdapter {
 	private Texture m_texturePlayerJump;
 	private Texture m_texturePlayerDie;
 	private PlayerInterfaceDrawer m_player_interface_drawer;
+
+	//////////////////////////SCREEN
+
+	private Texture m_pause_bg;
+	private Texture m_game_over_bg;
 
 
 	////////////////////////CAMERA
@@ -134,9 +140,19 @@ public class TheGame extends ApplicationAdapter {
 		m_pause_button_texture = new Texture(Gdx.files.internal("tileset/button-pause.png"));
 		m_pause_button_sprite = new TileSet(m_pause_button_texture, 64, 64);
 
-		m_player_interface_drawer = new PlayerInterfaceDrawer(m_stomach_sprite, m_pill_can_sprite, m_pill_button_sprite, m_pause_button_sprite, m_interface_batch);
+
+
+
+		m_pause_bg = new Texture(Gdx.files.internal("screen/pause-bg.png"));
+		m_game_over_bg = new Texture(Gdx.files.internal("screen/game-over-bg.png"));
+
+		m_player_interface_drawer = new PlayerInterfaceDrawer(m_stomach_sprite, m_pill_can_sprite, m_pill_button_sprite, m_pause_button_sprite, m_pause_bg, m_game_over_bg, m_interface_batch);
+
+
 
 		///////////////////////////SCREEN
+
+
 
 
 		///////////////////////////PLAYER
@@ -172,11 +188,11 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+
 		m_playerController.eventHandler();
+		m_player.update(m_playerController);
 		if(m_player.getPause() == 0){
-
-
-			m_player.update(m_playerController);
 
 			moveCamera(m_player.getPosition().x * 64, getCameraY());
 			m_camera_batch.setProjectionMatrix(m_camera.combined);
@@ -189,8 +205,9 @@ public class TheGame extends ApplicationAdapter {
 			m_level.checkPlayerPosition(m_player.getPosition().x);
 
 			///////////////////////////////////BACKGROUND
-			if(m_player.getState() != Player.State.DEAD)
-				m_background.draw(0.05f, m_player.getRun_delta()*5000);
+			if(m_player.getState() != Player.State.DEAD) {
+				m_background.draw(0.05f, m_player.getRun_delta() * 5000);
+			}
 			else
 				m_background.draw(0.0f, 0);
 
@@ -217,15 +234,28 @@ public class TheGame extends ApplicationAdapter {
 				m_playerDrawer.draw();
 			m_camera_batch.end();
 
-			m_interface_batch.begin();
-	//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
-	//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
+
+				m_interface_batch.begin();
+				//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
+				//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
 
 				m_player_interface_drawer.draw();
 
-			m_interface_batch.end();
+				m_interface_batch.end();
+
 
 		}
+		else{
+			m_interface_batch.begin();
+			//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
+			//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
+
+			m_player_interface_drawer.draw();
+
+			m_interface_batch.end();
+		}
+
+		
 
 	}
 
