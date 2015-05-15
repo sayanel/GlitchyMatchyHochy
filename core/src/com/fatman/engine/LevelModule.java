@@ -76,7 +76,7 @@ public class LevelModule implements Drawable{
         vector.y = 1;
         getDrawer().getSpriteBatch();
         GameObjectDrawer gameObjectDrawer = new GameObjectDrawer(getDrawer().getGameObjectSprite(), getDrawer().getSpriteBatch(), getDrawer().getTileWidth(), getDrawer().getTileHeight());
-        GameObject g = new GameObject(vector, GameObject.typeFromInt(r.nextInt(2)), gameObjectDrawer);
+        GameObject g = new GameObject(vector, GameObject.typeFromInt(r.nextInt(1)), gameObjectDrawer);
         g.notifyChanges();
         return g;
     }

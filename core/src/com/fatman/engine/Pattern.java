@@ -20,7 +20,7 @@ public class Pattern {
 
     private int[][] m_pattern;
 
-    public static int PATTERN_HEIGHT = 5;
+    public static int PATTERN_HEIGHT = 10;
     private int PATTERN_WIDTH;
 
 
