@@ -42,8 +42,6 @@ public class TheGame extends ApplicationAdapter {
 	private TileSet m_tile_set_object;
 	private TileSet m_game_object_sprite;
 
-
-
 	private Texture m_tile_set_texture;
 	private Texture m_tile_set_texture_object;
 	private Texture m_game_object_sprite_texture;
