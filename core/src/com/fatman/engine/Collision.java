@@ -82,8 +82,8 @@ public class Collision {
 
                 Rectangle objectPatternBound = genTileBounds(module.getObjectPattern().getHeight() - i - 1, j);
 
-                System.out.println("player graphic pos x:" + playerBounds.getX());
-                System.out.println("player graphic width x:" + playerBounds.getWidth() + "\n");
+                //System.out.println("player graphic pos x:" + playerBounds.getX());
+                //System.out.println("player graphic width x:" + playerBounds.getWidth() + "\n");
 
                 if(playerBounds.overlaps(objectPatternBound) && module.getObjectPattern().getData()[i][j] > 0) {
                     listOfObject.add(module.getObjectPattern().getData()[i][j]); //On a touché ce qu'il y avait en (i,j) donc on l'ajoute
