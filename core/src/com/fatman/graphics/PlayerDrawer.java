@@ -147,6 +147,7 @@ public class PlayerDrawer implements Drawer {
 
     public void drawDeadPlayer(){
         m_batch.draw(m_playerDie.getKeyFrame(9), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        System.out.println("DEAD 9");
     }
 
 
