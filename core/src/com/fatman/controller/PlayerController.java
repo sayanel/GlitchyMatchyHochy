@@ -39,12 +39,17 @@ public class PlayerController implements Controller{
 
         ///////JUMP
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-            if(m_player.getState() != Player.State.JUMPING && m_player.getState() != Player.State.DOUBLEJUMP) m_player.jump();
+            if(m_player.getState() != Player.State.JUMPING && m_player.getState() != Player.State.DOUBLEJUMP){
+                m_player.jump();
+                m_player.playJumpSound();
+            }
+
         }
 
         //SLIM -- TAKE PILLS
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
             m_player.slim();
+
         }
 
         ///////HIT
@@ -94,7 +99,8 @@ public class PlayerController implements Controller{
 
             ///////JUMP
             else if ( m_player.getState() != Player.State.JUMPING && m_player.getState() != Player.State.DOUBLEJUMP) {
-               m_player.jump();
+                m_player.jump();
+                m_player.playJumpSound();
             }
 
 

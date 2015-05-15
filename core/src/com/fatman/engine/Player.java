@@ -67,10 +67,17 @@ public class Player implements Drawable, Controllable {
     private Drawer m_drawer;
 
         /////////////////SOUND
-    private Sound m_prout_sound;
+    private Sound m_prout_sound1;
+    private Sound m_prout_sound2;
     private Sound m_pills_sound;
     private Sound m_miam_sound;
-    
+    private Sound m_miam_burger_sound;
+    private Sound m_miam_pills_sound1;
+    private Sound m_miam_pills_sound2;
+    private Sound m_jump_sound1;
+    private Sound m_jump_sound2;
+    private Sound m_jump_sound3;
+
     /////////////////////INTERFACE
     private Drawer m_interface_drawer;
     private int m_pill_button_sprite_tile_number;
@@ -112,9 +119,17 @@ public class Player implements Drawable, Controllable {
         m_pause = 0;
 
         ///////////SOUND
-        m_prout_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Explosion.wav"));
+        m_prout_sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/PROUT01.wav"));
+        m_prout_sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/PROUT02.wav"));
         m_pills_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Blip_Select.wav"));
         m_miam_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Randomize.wav"));
+        m_miam_burger_sound = Gdx.audio.newSound(Gdx.files.internal("audio/EAT_BURGER01.wav"));
+        m_miam_pills_sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/EAT_PILL01.wav"));
+        m_miam_pills_sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/EAT_PILL02.wav"));
+        m_jump_sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/SAUT01.wav"));
+        m_jump_sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/SAUT02.wav"));
+        m_jump_sound3 = Gdx.audio.newSound(Gdx.files.internal("audio/SAUT03.wav"));
+
 
         setDrawer(drawer);
         setInterfaceDrawer(interface_drawer);
@@ -154,13 +169,32 @@ public class Player implements Drawable, Controllable {
     //******************** * FUNCTIONS * ********************//
 
     public void playProutSound(){
-        m_prout_sound.play(1.0f);
+        int r = 1 + (int)(Math.random()*2);
+        if(r==1) m_prout_sound1.play(1.0f);
+        else m_prout_sound2.play(1.0f);
     }
     public void playPillsSound(){
         //m_pills_sound.play(1.0f);
     }
     public void playerMiamSound(){
         m_miam_sound.play(1.0f);
+    }
+
+    public void playMiamPillsSound(){
+        int r = 1 + (int)(Math.random()*2);
+        if(r==1)m_miam_pills_sound1.play(1.0f);
+        else m_miam_pills_sound2.play(1.0f);
+    }
+
+    public void playJumpSound(){
+        int r = 1 + (int)(Math.random()*3);
+        if(r==1) m_jump_sound1.play(1.0f);
+        else if(r==2)m_jump_sound2.play(1.0f);
+        else m_jump_sound3.play(1.0f);
+    }
+
+    public void playMiamBurger(){
+        m_miam_burger_sound.play(1.0f);
     }
 
     public void run() {
@@ -266,6 +300,7 @@ public class Player implements Drawable, Controllable {
                 m_weight -= 10;
                 m_jump_height += JUMP_PENALITY;
                 m_doublejump_height += DOUBLEJUMP_PENALITY;
+                playMiamPillsSound();
             }
             else{
                 m_weight = 0;

@@ -9,19 +9,18 @@
 package com.fatman.screen;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainMenuScreen extends Game {
 
+    ///////////////////////////CONSTANTS
+    public static final int GAME_WIDTH = 800;
+    public static final int GAME_HEIGHT = 480;
 
 
-    public SpriteBatch batcher;
 
 
     @Override
     public void create () {
-        batcher = new SpriteBatch();
-
         setScreen(new GameScreen(this));
     }
 

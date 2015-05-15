@@ -68,6 +68,7 @@ public class TheGame extends ApplicationAdapter {
 	private PlayerDrawer m_playerDrawer;
 	private Texture m_texturePlayerRun;
 	private Texture m_texturePlayerJump;
+	private Texture m_texturePlayerDie;
 	private PlayerInterfaceDrawer m_player_interface_drawer;
 
 
@@ -82,7 +83,6 @@ public class TheGame extends ApplicationAdapter {
 
 	///////////////////////////AUDIO
 	private Sound m_global_sound;
-
 
 
 	@Override
@@ -105,7 +105,7 @@ public class TheGame extends ApplicationAdapter {
 		m_level = new Level("patterns/", new ArrayList<LevelModule>(), m_level_drawer);
 
 		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_camera_batch)));
-		for(int i = 0; i < 3; ++i){
+		for (int i = 0; i < 3; ++i) {
 			double position = m_level.peek().getPosition() + m_level.peek().getWidth();
 			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_camera_batch)));
 		}
@@ -117,9 +117,9 @@ public class TheGame extends ApplicationAdapter {
 		TextureRegion sky = new TextureRegion(new Texture(Gdx.files.internal("background/sky.png")));
 		TextureRegion buildings = new TextureRegion(new Texture(Gdx.files.internal("background/buildings.png")));
 		m_background = new ParallaxBackground(new ParallaxLayer[]{
-				new ParallaxLayer(sky,new Vector2(0.05f,0.05f),new Vector2(0,100), new Vector2(0, 0)),
-				new ParallaxLayer(buildings,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
-		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150,0));
+				new ParallaxLayer(sky, new Vector2(0.05f, 0.05f), new Vector2(0, 100), new Vector2(0, 0)),
+				new ParallaxLayer(buildings, new Vector2(0.1f, 0.1f), new Vector2(0, 0)),
+		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150, 0));
 
 		///////////////////////////INTERFACE
 		m_stomach_texture = new Texture(Gdx.files.internal("tileset/stomach_sprite.png"));
@@ -139,12 +139,12 @@ public class TheGame extends ApplicationAdapter {
 		///////////////////////////SCREEN
 
 
-
 		///////////////////////////PLAYER
 		m_texturePlayerRun = new Texture(Gdx.files.internal("tileset/larry-run.png"));
 		m_texturePlayerJump = new Texture(Gdx.files.internal("tileset/larry-jump.png"));
+		m_texturePlayerDie = new Texture(Gdx.files.internal("tileset/larry-die.png"));
 
-		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayerRun, m_texturePlayerJump, m_tile_set.getWidth(), m_tile_set.getHeight());
+		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayerRun, m_texturePlayerJump, m_texturePlayerDie, m_tile_set.getWidth(), m_tile_set.getHeight());
 
 		m_player = new Player(m_playerDrawer, m_player_interface_drawer);
 		m_playerController = new PlayerController(m_player);
@@ -162,11 +162,12 @@ public class TheGame extends ApplicationAdapter {
 
 		///////////////////////////SOUND
 		m_global_sound = Gdx.audio.newSound(Gdx.files.internal("audio/FATLARRY_LOOP.wav"));
-		m_global_sound.loop();
+		m_global_sound.loop(0.16f);
+
 	}
 
-	@Override
-	public void render () {
+
+	public void render() {
 
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -193,17 +194,6 @@ public class TheGame extends ApplicationAdapter {
 			else
 				m_background.draw(0.0f, 0);
 
-
-
-//			bitmapFont.draw(m_camera_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
-//			bitmapFont.draw(m_camera_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
-			//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
-			//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
-			//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64 + 200, 330);
-			//bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64 + 200, 310);
-			//bitmapFont.draw(m_batch, "m_fat_state : " + Double.toString(m_player.getFatState()), m_player.getPosition().x * 64, 290);
-			//Player.State state = m_player.getState();
-			//bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
 
 			m_camera_batch.begin();
 				///////////////////////////////LEVEL

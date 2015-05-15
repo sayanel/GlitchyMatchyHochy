@@ -25,7 +25,7 @@ public class Collision {
         switch(collisionType){
             case ENNEMY:
                 player.enlarge();
-                player.playerMiamSound();
+                player.playMiamBurger();
                 break;
             case BONUS:
 

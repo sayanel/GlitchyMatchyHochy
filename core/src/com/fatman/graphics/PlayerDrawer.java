@@ -28,7 +28,7 @@ public class PlayerDrawer implements Drawer {
     private int m_tile_width;
     private int m_tile_height;
 
-
+    private int m_isAlreadyDead;
 
     /////////ANIMATION & TEXTURE .
     private Animation m_playerRunAnimation1;
@@ -40,6 +40,7 @@ public class PlayerDrawer implements Drawer {
     private Animation m_playerJumpAnimation2_prout;
     private Animation m_playerJumpAnimation3;
     private Animation m_playerJumpAnimation3_prout;
+    private Animation m_playerDie;
 
     /////////SOUND
     Sound m_prout_sound;
@@ -52,7 +53,7 @@ public class PlayerDrawer implements Drawer {
 
 
     //******************** * CONSTRUCTORS * ********************//
-    public PlayerDrawer(SpriteBatch batch, Texture texturePlayerRun, Texture texturePlayerJump, int tileWidth, int tileHeight) {
+    public PlayerDrawer(SpriteBatch batch, Texture texturePlayerRun, Texture texturePlayerJump, Texture texturePlayerDie, int tileWidth, int tileHeight) {
         m_batch = batch;
 
         setTileWidth(tileWidth);
@@ -82,6 +83,10 @@ public class PlayerDrawer implements Drawer {
         split = new TextureRegion(texturePlayerJump).split(128, 128)[5];
         m_playerJumpAnimation3_prout = new Animation(0.06f, split);
 
+        //DIE
+        split = new TextureRegion(texturePlayerDie).split(128, 128)[0];
+        m_playerDie = new Animation(0.06f, split);
+        m_isAlreadyDead = 0;
 
 
     }
@@ -121,6 +126,15 @@ public class PlayerDrawer implements Drawer {
         if(m_fat_state == 2) m_batch.draw(m_playerRunAnimation3.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
     }
 
+    public void drawPlayerDie(){
+        m_batch.draw(m_playerDie.getKeyFrame(m_elapsedTime, true), m_position.x * m_tile_width, m_position.y * m_tile_height);
+        m_isAlreadyDead ++;
+    }
+
+    public void drawDeadPlayer(){
+        m_batch.draw(m_playerDie.getKeyFrame(9), m_position.x * m_tile_width, m_position.y * m_tile_height);
+    }
+
 
     //DRAWER METHODS
     public void draw() {
@@ -139,6 +153,12 @@ public class PlayerDrawer implements Drawer {
         if(m_state == Player.State.JUMPING) {
             m_elapsedTime += Gdx.graphics.getDeltaTime()/2;
             drawJump();
+        }
+
+        if(m_state == Player.State.DEAD){
+            m_elapsedTime += Gdx.graphics.getDeltaTime()/20;
+            if(m_isAlreadyDead < 30) drawPlayerDie();
+            else drawDeadPlayer();
         }
 
     }
