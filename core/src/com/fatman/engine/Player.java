@@ -18,6 +18,14 @@ public class Player implements Drawable, Controllable {
         IDLE, WALKING, RUNNING, JUMPING, DOUBLEJUMP, DEAD
     }
 
+    static final float  FAT_PADDING = 22;
+    static final float  MEDIUM_PADDING = 26;
+    static final float  SLIM_PADDING = 29;
+
+    static final float  FAT_WIDTH = 78;
+    static final float  MEDIUM_WIDTH = 70;
+    static final float  SLIM_WIDTH = 65;
+
     static final float  JUMP_DELTA = 0.5f;
     static final float  DOUBLEJUMP_DELTA = 0.25f;
     static final float  JUMP_PENALITY = 0.3f;
@@ -48,8 +56,9 @@ public class Player implements Drawable, Controllable {
     private Vector2     m_position;
     private Vector2     m_velocity;
     private Vector2     m_acceleration;
-    private int         m_height;
-    private int         m_width;
+    private float       m_height;
+    private float       m_width;
+    private float       m_padding;
 
     private Rectangle   m_bounds = new Rectangle();
 
@@ -72,7 +81,11 @@ public class Player implements Drawable, Controllable {
         this.m_position = new Vector2(10,1);
         this.m_velocity = new Vector2(RUN_BEGIN,0);
         this.m_acceleration = new Vector2(0.05f,0);
-        this.m_height = 2;
+
+        this.m_height = 128;
+        this.m_width = SLIM_WIDTH;
+        this.m_padding = SLIM_PADDING;
+
         m_fat_state = 0;
         m_jump_height = 15f;
         m_doublejump_height = 9f;
@@ -98,8 +111,9 @@ public class Player implements Drawable, Controllable {
     //******************** * GETTERS * ********************//
 
     public Rectangle getBounds() {return m_bounds;}
-    public int getWidth(){return m_width;}
-    public int getHeight(){return m_height;}
+    public float getWidth(){return m_width;}
+    public float getPaddingWidth(){return m_padding;}
+    public float getHeight(){return m_height;}
     public Vector2 getPosition(){return m_position;}
     public Vector2 getAcceleration(){return m_acceleration;}
     public Vector2 getVelocity(){return m_velocity;}
@@ -183,9 +197,24 @@ public class Player implements Drawable, Controllable {
 
 
     public void changeFatState(){
-        if(m_weight <  MAX_WEIGHT/3) m_fat_state = 0;
-        else if(m_weight  < MAX_WEIGHT-MAX_WEIGHT/3) m_fat_state = 1;
-        else m_fat_state = 2;
+        if(m_weight <  MAX_WEIGHT/3){
+            m_fat_state = 0;
+
+            m_width = SLIM_WIDTH;
+            m_padding = SLIM_PADDING;
+        }
+        else if(m_weight  < MAX_WEIGHT-MAX_WEIGHT/3){
+            m_fat_state = 1;
+
+            m_width = MEDIUM_WIDTH;
+            m_padding = MEDIUM_PADDING;
+        }
+        else{
+            m_fat_state = 2;
+
+            m_width = FAT_WIDTH;
+            m_padding = FAT_PADDING;
+        }
     }
 
     public void enlarge(){

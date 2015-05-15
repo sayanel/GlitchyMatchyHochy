@@ -94,7 +94,7 @@ public class TheGame extends ApplicationAdapter {
 
 		///////////////////////////LEVEL
 		m_tile_set_texture = new Texture(Gdx.files.internal("tileset/street_tile.png"));
-		m_tile_set_texture_object = new Texture(Gdx.files.internal("tileset/PiluleMoche.png"));
+		m_tile_set_texture_object = new Texture(Gdx.files.internal("tileset/pill.png"));
 		m_game_object_sprite_texture = new Texture(Gdx.files.internal("tileset/food_sprite.png"));
 
 		m_tile_set = new TileSet(m_tile_set_texture, 64, 64);
