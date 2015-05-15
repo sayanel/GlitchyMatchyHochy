@@ -23,8 +23,11 @@ public class GameObject implements Drawable{
 
     private Vector2 m_position;
 
-    private double m_width;
-    private double m_heigth;
+    private float m_width;
+    private float m_padding_width;
+
+    private float m_height;
+    private float m_padding_height;
 
     private Drawer m_drawer;
 
@@ -46,8 +49,13 @@ public class GameObject implements Drawable{
     public GameObject(Vector2 position, GameObjectType objectType, Drawer drawer){
         m_position = position;
         m_object_type = objectType;
-        m_width = 1;
-        m_heigth = 1;
+
+        m_width = 40;
+        m_padding_width = 13;
+
+        m_height = 50;
+        m_padding_height = 6;
+
         setDrawer(drawer);
     }
 
@@ -65,12 +73,20 @@ public class GameObject implements Drawable{
         return m_object_type;
     }
 
-    public double getWidth(){
+    public float getWidth(){
         return m_width;
     }
 
-    public double getHeight(){
-        return m_heigth;
+    public float getPaddingWidth(){
+        return m_padding_width;
+    }
+
+    public float getHeight(){
+        return m_height;
+    }
+
+    public float getPaddingHeight(){
+        return m_padding_height;
     }
 
     @Override

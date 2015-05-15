@@ -20,8 +20,8 @@ public class PlayerDrawer implements Drawer {
     private SpriteBatch m_batch;
 
     private Vector2 m_position;
-    private int m_height;
-    private int m_width;
+    private float m_height;
+    private float m_width;
     private Player.State m_state;
     private int m_fat_state;
 

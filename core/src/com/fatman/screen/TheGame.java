@@ -94,8 +94,8 @@ public class TheGame extends ApplicationAdapter {
 
 		///////////////////////////LEVEL
 		m_tile_set_texture = new Texture(Gdx.files.internal("tileset/street_tile.png"));
-		m_tile_set_texture_object = new Texture(Gdx.files.internal("tileset/PiluleMoche.png"));
-		m_game_object_sprite_texture = new Texture(Gdx.files.internal("tileset/food_sprite.png"));
+		m_tile_set_texture_object = new Texture(Gdx.files.internal("tileset/pill.png"));
+		m_game_object_sprite_texture = new Texture(Gdx.files.internal("tileset/burger.png"));
 
 		m_tile_set = new TileSet(m_tile_set_texture, 64, 64);
 		m_tile_set_object = new TileSet(m_tile_set_texture_object, 64, 64);
@@ -114,15 +114,15 @@ public class TheGame extends ApplicationAdapter {
 		m_level.print();
 
 		//////////////////////////BACKGROUND
-		TextureRegion bg1 = new TextureRegion(new Texture(Gdx.files.internal("background/bg.jpg")));
-		TextureRegion bg2 = new TextureRegion(new Texture(Gdx.files.internal("background/bg2.png")));
+		TextureRegion sky = new TextureRegion(new Texture(Gdx.files.internal("background/sky.png")));
+		TextureRegion buildings = new TextureRegion(new Texture(Gdx.files.internal("background/buildings.png")));
 		m_background = new ParallaxBackground(new ParallaxLayer[]{
-				new ParallaxLayer(bg1,new Vector2(0.05f,0.05f),new Vector2(0,100), new Vector2(0, 0)),
-				new ParallaxLayer(bg2,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
+				new ParallaxLayer(sky,new Vector2(0.05f,0.05f),new Vector2(0,100), new Vector2(0, 0)),
+				new ParallaxLayer(buildings,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
 		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150,0));
 
 		///////////////////////////INTERFACE
-		m_stomach_texture = new Texture(Gdx.files.internal("tileset/interface_sprite.png"));
+		m_stomach_texture = new Texture(Gdx.files.internal("tileset/stomach_sprite.png"));
 		m_stomach_sprite = new TileSet(m_stomach_texture, 256, 256);
 
 		m_pill_button_texture = new Texture(Gdx.files.internal("tileset/button-eat.png"));

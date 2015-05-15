@@ -45,6 +45,7 @@ public class Collision {
 
     }
 
+    //Vérifie les collisions avec les random Game Objects
     public GameObject.GameObjectType getGameObjectCollision(Player player, ArrayList<GameObject> objectList){
 
         GameObject.GameObjectType collisionType = GameObject.GameObjectType.VOID;
@@ -61,6 +62,7 @@ public class Collision {
         return collisionType;
     }
 
+    //Vérifie les collisions avec les object Patterns
     public ArrayList<Integer> getObjectPatternCollision(Player player, LevelModule module) {
 
         //Converti la position du joueur dans le repère du module
@@ -73,8 +75,15 @@ public class Collision {
 
         for(int i = 0; i < module.getObjectPattern().getHeight(); ++i){
             for(int j = 0; j < module.getObjectPattern().getWidth(); ++j){
-                Rectangle playerBounds = new Rectangle((float) posPlayerRelx, (float)posPlayerRely, player.getWidth(), player.getHeight());
+                Rectangle playerBounds = new Rectangle((float) posPlayerRelx * 64 + player.getPaddingWidth(),
+                                                       (float)posPlayerRely * 64,
+                                                       player.getWidth(),
+                                                       player.getHeight());
+
                 Rectangle objectPatternBound = genTileBounds(module.getObjectPattern().getHeight() - i - 1, j);
+
+                System.out.println("player graphic pos x:" + playerBounds.getX());
+                System.out.println("player graphic width x:" + playerBounds.getWidth() + "\n");
 
                 if(playerBounds.overlaps(objectPatternBound) && module.getObjectPattern().getData()[i][j] > 0) {
                     listOfObject.add(module.getObjectPattern().getData()[i][j]); //On a touché ce qu'il y avait en (i,j) donc on l'ajoute
@@ -86,17 +95,25 @@ public class Collision {
         return listOfObject;
     }
 
-
+    //genere le rectangle correspondant au player
     public Rectangle genPlayerRectangle(Player player){
-        return new Rectangle(player.getPosition().x, player.getPosition().y, player.getWidth(),player.getHeight());
+        return new Rectangle(player.getPosition().x * 64 + player.getPaddingWidth(),
+                             player.getPosition().y * 64,
+                             player.getWidth(),
+                             player.getHeight());
     }
 
+    //genere le rectangle correspondant à un random Object
     public Rectangle genObjectBounds(GameObject gameObject){
-        return new Rectangle(gameObject.getPosition().x, gameObject.getPosition().y, ((float) gameObject.getWidth()), ((float) gameObject.getHeight()));
+        return new Rectangle(gameObject.getPosition().x * 64 + gameObject.getPaddingWidth(),
+                             gameObject.getPosition().y * 64 + gameObject.getPaddingHeight(),
+                             ((float) gameObject.getWidth()),
+                             ((float) gameObject.getHeight()));
     }
 
+    //genere le rectangle correspondant à un un pattern object
     public Rectangle genTileBounds(int i, int j) {
-        return new Rectangle(j+0.25f, i + 0.15f, 0.7f, 0.5f);
+        return new Rectangle(j * 64 + 8, i * 64 + 6, 50, 50);
     }
 
 }

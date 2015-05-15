@@ -11,6 +11,7 @@ package com.fatman.graphics;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fatman.engine.GameObject;
 import com.fatman.engine.LevelModule;
+import com.fatman.engine.Pattern;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class LevelModuleDrawer implements Drawer{
             for(int j = 0; j < m_scene_data[0].length; ++j){
                 if(m_scene_data[i][j] > 0){
                     float x = (float)(m_position * m_tile_set.getWidth() +  j * m_tile_set.getWidth());
-                    float y = (float)(4*m_tile_set.getHeight()) - (float)(i * m_tile_set.getHeight());
+                    float y = (float)(Pattern.PATTERN_HEIGHT * m_tile_set.getHeight()) - (float)(i * m_tile_set.getHeight() + 64);
                     m_tile_set.getTile(m_scene_data[i][j]).setPosition(x, y);
                     m_tile_set.getTile(m_scene_data[i][j]).draw(m_batch);
                 }
@@ -77,7 +78,7 @@ public class LevelModuleDrawer implements Drawer{
             for(int l = 0; l < m_object_data[0].length; ++l){
                 if(m_object_data[k][l] > 0){
                     float x = (float)(m_position * m_tile_set_object.getWidth() +  l * m_tile_set_object.getWidth());
-                    float y = (float)(4*m_tile_set_object.getHeight()) - (float)(k * m_tile_set_object.getHeight());
+                    float y = (float)(Pattern.PATTERN_HEIGHT * m_tile_set_object.getHeight()) - (float)(k * m_tile_set_object.getHeight() + 64);
                     m_tile_set_object.getTile(m_object_data[k][l]).setPosition(x, y);
                     m_tile_set_object.getTile(m_object_data[k][l]).draw(m_batch);
                 }
