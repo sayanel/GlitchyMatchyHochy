@@ -368,32 +368,34 @@ public class Player implements Drawable, Controllable {
     //CONTROLLABLE METHODS
     public void update(Controller controller){
 
-        m_elapsed_time += Gdx.graphics.getDeltaTime();
-        //player modifications setters
+        if(m_state != State.DEAD && this.getPause() == 0) {
 
-        if(m_state == State.JUMPING){
-            updateJump();
+            m_elapsed_time += Gdx.graphics.getDeltaTime();
+            //player modifications setters
+
+            if (m_state == State.JUMPING) {
+                updateJump();
+            }
+            if (m_state == State.DOUBLEJUMP) {
+                updateDoubleJump();
+            }
+            if (m_state == State.RUNNING) {
+                updateRun();
+            }
+            if (m_state != State.DEAD) {
+                m_position.x += m_velocity.x * Gdx.graphics.getDeltaTime();
+            }
+
+            m_position.y += m_velocity.y * Gdx.graphics.getDeltaTime();
+
+            //time duration pour l'effet d'appuie sur le bouton
+            if (m_nb_frame_for_pill_button_sprite_tile_number > 0) m_nb_frame_for_pill_button_sprite_tile_number--;
+            if (m_nb_frame_for_pill_button_sprite_tile_number <= 0) m_pill_button_sprite_tile_number = 0;
+
+            //SCORE
+            if (m_state != State.DEAD) m_score += 0.05;
+
         }
-        if(m_state == State.DOUBLEJUMP){
-            updateDoubleJump();
-        }
-        if(m_state == State.RUNNING){
-            updateRun();
-        }
-        if(m_state != State.DEAD){
-            m_position.x += m_velocity.x * Gdx.graphics.getDeltaTime();
-        }
-
-        m_position.y += m_velocity.y * Gdx.graphics.getDeltaTime();
-
-        //time duration pour l'effet d'appuie sur le bouton
-        if(m_nb_frame_for_pill_button_sprite_tile_number > 0) m_nb_frame_for_pill_button_sprite_tile_number--;
-        if(m_nb_frame_for_pill_button_sprite_tile_number <= 0) m_pill_button_sprite_tile_number = 0;
-
-        //SCORE
-        if(m_state != State.DEAD) m_score += 0.05;
-
-
         this.notifyChanges();
     }
 
