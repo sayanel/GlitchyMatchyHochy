@@ -27,18 +27,22 @@ public class PlayerController implements Controller{
 
     public void eventHandler(){
 
-        ///////JUMP
+        /************************************************************************************/
+        /*************************************CLAVIER****************************************/
+        /************************************************************************************/
+
+        ///////DOUBLEJUMP
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && m_player.getState() == Player.State.JUMPING){
             if(m_player.getState() != Player.State.DOUBLEJUMP) m_player.doublejump();
             m_player.playProutSound();
         }
 
-
+        ///////JUMP
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             if(m_player.getState() != Player.State.JUMPING && m_player.getState() != Player.State.DOUBLEJUMP) m_player.jump();
         }
 
-
+        //SLIM -- TAKE PILLS
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
             m_player.slim();
         }
@@ -53,15 +57,56 @@ public class PlayerController implements Controller{
             m_player.accelerate();
         }
 
-        if(Gdx.input.justTouched()) {
-            Vector3 touchPos = new Vector3();
+
+
+        /************************************************************************************/
+        /************************************SMARTPHONE**************************************/
+        /************************************************************************************/
+
+        Vector3 touchPos = new Vector3();
+
+        ///////DOUBLEJUMP
+        if(Gdx.input.justTouched() && m_player.getState() == Player.State.JUMPING ) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            if (touchPos.y > Gdx.graphics.getHeight() / 2) {
+            if(m_player.getState() != Player.State.DOUBLEJUMP){
+                m_player.doublejump();
+                m_player.playProutSound();
+            }
+        }
+
+
+        if(Gdx.input.justTouched()) {
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+
+            //SLIM -- TAKE PILLS
+            if(touchPos.y < 480 - 15 && touchPos.y > 480 - (20+0.75*128) && touchPos.x > 15 && touchPos.x < (20+0.75*128)) {
+                m_player.slim();
+            }
+
+            //PAUSE -- UNPAUSE
+            else if(touchPos.y < 20 + 64 && touchPos.y > 20 && touchPos.x > 20 && touchPos.x < 20 + 64) {
+                m_player.pause();
+            }
+            else if(m_player.getPause() == 1) {
+                m_player.pause();
+            }
+
+
+            ///////JUMP
+            else if ( m_player.getState() != Player.State.JUMPING && m_player.getState() != Player.State.DOUBLEJUMP) {
                m_player.jump();
             }
 
 
+
+
+
         }
+
+
+
+
+
 
     }
 

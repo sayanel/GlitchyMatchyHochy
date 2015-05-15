@@ -29,6 +29,8 @@ public class Player implements Drawable, Controllable {
     static final float  RUN_BEGIN = 5f;
     static final float  INITIAL_RUN_DELTA = 0.00005f;
 
+
+
     //******************** * PARAMETERS * ********************//
 
     private State       m_state;
@@ -62,7 +64,11 @@ public class Player implements Drawable, Controllable {
     
     /////////////////////INTERFACE
     private Drawer m_interface_drawer;
+    private int m_pill_button_sprite_tile_number;
+    private int m_nb_frame_for_pill_button_sprite_tile_number;
+    private float m_score;
 
+    private int m_pause;
 
     //******************** * CONSTRUCTORS * ********************//
 
@@ -77,6 +83,8 @@ public class Player implements Drawable, Controllable {
         m_jump_height = 15f;
         m_doublejump_height = 9f;
 
+        m_score = 1.0f;
+
         m_run_delta = INITIAL_RUN_DELTA;
 
         m_elapsed_time = 0;
@@ -84,6 +92,11 @@ public class Player implements Drawable, Controllable {
         this.m_bounds.height = this.m_height;
         this.m_bounds.width = this.m_width;
         m_state = State.RUNNING;
+
+        m_pill_button_sprite_tile_number = 0;
+        m_nb_frame_for_pill_button_sprite_tile_number = 0;
+
+        m_pause = 0;
 
         ///////////SOUND
         m_prout_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Explosion.wav"));
@@ -106,12 +119,22 @@ public class Player implements Drawable, Controllable {
     public State getState(){return m_state;}
     public float getRun_delta(){ return m_run_delta; }
     public int getFatState() { return m_fat_state; }
+    public int getPillButtonSpriteTileNumber(){ return m_pill_button_sprite_tile_number; }
+    public int getNbFrameForPillButtonSpriteTileNumber(){ return m_nb_frame_for_pill_button_sprite_tile_number; }
+    public int getScore(){ return (int)m_score; }
+    public int getPause(){ return m_pause;}
 
 
     //******************** * SETTERS * ********************//
     public void setState(State new_state){
         this.m_state = new_state;
         notifyChanges();
+    }
+
+    public void setPillButtonSpriteTileNumber(int new_value){  m_pill_button_sprite_tile_number = new_value; }
+    public void setPause(){
+        if(m_pause == 0){ m_pause = 1; System.out.println("PAUSE");}
+        else{ m_pause = 0; System.out.println("UNPAUSE");}
     }
 
     //******************** * FUNCTIONS * ********************//
@@ -126,7 +149,7 @@ public class Player implements Drawable, Controllable {
         m_miam_sound.play(1.0f);
     }
 
-    public void run(){
+    public void run() {
         setState(State.RUNNING);
     }
 
@@ -218,6 +241,9 @@ public class Player implements Drawable, Controllable {
             else{
                 m_weight = 0;
             }
+
+            m_pill_button_sprite_tile_number = 1;
+            m_nb_frame_for_pill_button_sprite_tile_number = 15;
         }
     }
 
@@ -240,6 +266,13 @@ public class Player implements Drawable, Controllable {
     public int getPillsNumber(){
         return m_pills_number;
     }
+
+    public void pause(){
+
+        setPause();
+    }
+
+
 
     //DRAWABLE METHODS
     @Override
@@ -288,6 +321,14 @@ public class Player implements Drawable, Controllable {
         }
 
         m_position.y += m_velocity.y * Gdx.graphics.getDeltaTime();
+
+        //time duration pour l'effet d'appuie sur le bouton
+        if(m_nb_frame_for_pill_button_sprite_tile_number > 0) m_nb_frame_for_pill_button_sprite_tile_number--;
+        if(m_nb_frame_for_pill_button_sprite_tile_number <= 0) m_pill_button_sprite_tile_number = 0;
+
+        //SCORE
+        if(m_state != State.DEAD) m_score += 0.05;
+
 
         this.notifyChanges();
     }

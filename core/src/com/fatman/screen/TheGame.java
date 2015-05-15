@@ -136,6 +136,10 @@ public class TheGame extends ApplicationAdapter {
 
 		m_player_interface_drawer = new PlayerInterfaceDrawer(m_stomach_sprite, m_pill_can_sprite, m_pill_button_sprite, m_pause_button_sprite, m_interface_batch);
 
+		///////////////////////////SCREEN
+
+
+
 		///////////////////////////PLAYER
 		m_texturePlayerRun = new Texture(Gdx.files.internal("tileset/larry-run.png"));
 		m_texturePlayerJump = new Texture(Gdx.files.internal("tileset/larry-jump.png"));
@@ -170,57 +174,62 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-		moveCamera(m_player.getPosition().x * 64, getCameraY());
-		m_camera_batch.setProjectionMatrix(m_camera.combined);
-
-		BitmapFont bitmapFont = new BitmapFont();
 		m_playerController.eventHandler();
-		m_player.update(m_playerController);
-
-		col.collisionHandler(m_player, m_level.getModule(1));
-
-		m_level.checkPlayerPosition(m_player.getPosition().x);
-
-		///////////////////////////////////BACKGROUND
-		if(m_player.getState() != Player.State.DEAD)
-			m_background.draw(0.05f, m_player.getRun_delta()*5000);
-		else
-			m_background.draw(0.0f, 0);
+		if(m_player.getPause() == 0){
 
 
+			m_player.update(m_playerController);
+
+			moveCamera(m_player.getPosition().x * 64, getCameraY());
+			m_camera_batch.setProjectionMatrix(m_camera.combined);
+
+			BitmapFont bitmapFont = new BitmapFont();
 
 
-		m_camera_batch.begin();
-			///////////////////////////////LEVEL
-			m_level_drawer.draw();
+			col.collisionHandler(m_player, m_level.getModule(1));
 
-			//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
-			//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
+			m_level.checkPlayerPosition(m_player.getPosition().x);
 
-			bitmapFont.draw(m_camera_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
-			bitmapFont.draw(m_camera_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
-			//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
-			//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
-			//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64 + 200, 330);
-			//bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64 + 200, 310);
-			//bitmapFont.draw(m_batch, "m_fat_state : " + Double.toString(m_player.getFatState()), m_player.getPosition().x * 64, 290);
-			//Player.State state = m_player.getState();
-			//bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
+			///////////////////////////////////BACKGROUND
+			if(m_player.getState() != Player.State.DEAD)
+				m_background.draw(0.05f, m_player.getRun_delta()*5000);
+			else
+				m_background.draw(0.0f, 0);
 
+
+
+
+			m_camera_batch.begin();
+				///////////////////////////////LEVEL
+				m_level_drawer.draw();
+
+				//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
+				//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
+
+				//bitmapFont.draw(m_camera_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
+				//bitmapFont.draw(m_camera_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
+				//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
+				//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
+				//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64 + 200, 330);
+				//bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64 + 200, 310);
+				//bitmapFont.draw(m_batch, "m_fat_state : " + Double.toString(m_player.getFatState()), m_player.getPosition().x * 64, 290);
+				//Player.State state = m_player.getState();
+				//bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
+				//bitmapFont.draw(m_camera_batch, "Score : " + Double.toString(m_score), m_player.getPosition().x * 64, 380);
 
 			///////////////////////////////PLAYER
-			m_playerDrawer.draw();
-		m_camera_batch.end();
+				m_playerDrawer.draw();
+			m_camera_batch.end();
 
-		m_interface_batch.begin();
-//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
-//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
+			m_interface_batch.begin();
+	//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
+	//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
 
-			m_player_interface_drawer.draw();
+				m_player_interface_drawer.draw();
 
-		m_interface_batch.end();
+			m_interface_batch.end();
 
+		}
 
 	}
 
