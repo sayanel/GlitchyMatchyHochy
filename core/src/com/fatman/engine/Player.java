@@ -59,11 +59,14 @@ public class Player implements Drawable, Controllable {
     private Sound m_prout_sound;
     private Sound m_pills_sound;
     private Sound m_miam_sound;
+    
+    /////////////////////INTERFACE
+    private Drawer m_interface_drawer;
 
 
     //******************** * CONSTRUCTORS * ********************//
 
-    public Player(Drawer drawer){
+    public Player(Drawer drawer, Drawer interface_drawer){
         this.m_weight = 0;
         this.m_pills_number = 0;
         this.m_position = new Vector2(10,1);
@@ -88,6 +91,7 @@ public class Player implements Drawable, Controllable {
         m_miam_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Randomize.wav"));
 
         setDrawer(drawer);
+        setInterfaceDrawer(interface_drawer);
         notifyChanges();
     }
 
@@ -243,21 +247,25 @@ public class Player implements Drawable, Controllable {
         m_drawer = d;
     }
 
+    public void setInterfaceDrawer(Drawer d) {
+        m_interface_drawer = d;
+    }
+
     @Override
     public Drawer getDrawer() {
         return m_drawer;
+    }
+    public Drawer getInterfaceDrawer() {
+        return m_interface_drawer;
     }
 
     @Override
     public void notifyChanges() {
         m_drawer.update(this);
+        m_interface_drawer.update(this);
     }
 
-public void dispose(){
-    m_prout_sound.dispose();
-    m_pills_sound.dispose();
-    m_miam_sound.dispose();
-}
+
 
 
     //CONTROLLABLE METHODS

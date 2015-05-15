@@ -2,7 +2,6 @@ package com.fatman.screen;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -30,7 +29,8 @@ public class TheGame extends ApplicationAdapter {
 
 
 	///////////////////////////BATCH
-	private SpriteBatch m_batch;
+	private SpriteBatch m_camera_batch;
+	private SpriteBatch m_interface_batch;
 
 
 	///////////////////////////LEVEL
@@ -44,6 +44,19 @@ public class TheGame extends ApplicationAdapter {
 	private Texture m_tile_set_texture_object;
 	private Texture m_game_object_sprite_texture;
 
+	///////////////////////////INTERFACE
+	private TileSet m_stomach_sprite;
+	private Texture m_stomach_texture;
+
+	private TileSet m_pause_button_sprite;
+	private Texture m_pause_button_texture;
+
+	private TileSet m_pill_button_sprite;
+	private Texture m_pill_button_texture;
+
+	private TileSet m_pill_can_sprite;
+	private Texture m_pill_can_texture;
+
 	///////////////////////////BACKGROUND
 	private ParallaxBackground m_background;
 
@@ -54,12 +67,13 @@ public class TheGame extends ApplicationAdapter {
 	private PlayerDrawer m_playerDrawer;
 	private Texture m_texturePlayerRun;
 	private Texture m_texturePlayerJump;
+	private PlayerInterfaceDrawer m_player_interface_drawer;
+
 
 	////////////////////////CAMERA
 	private static final float CAMERA_WIDTH = (float) GAME_WIDTH;
 	private static final float CAMERA_HEIGHT = (float) GAME_HEIGHT;
 	float m_move_camera_y;
-
 	private OrthographicCamera m_camera;
 
 	///////////////////////////COLLISION
@@ -74,7 +88,8 @@ public class TheGame extends ApplicationAdapter {
 	public void create () {
 
 		///////////////////////////BATCH
-		m_batch = new SpriteBatch();
+		m_camera_batch = new SpriteBatch();
+		m_interface_batch = new SpriteBatch();
 
 		///////////////////////////LEVEL
 		m_tile_set_texture = new Texture(Gdx.files.internal("tileset/street_tile.png"));
@@ -88,10 +103,10 @@ public class TheGame extends ApplicationAdapter {
 		m_level_drawer = new LevelDrawer();
 		m_level = new Level("patterns/", new ArrayList<LevelModule>(), m_level_drawer);
 
-		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_batch)));
+		m_level.getLevelModules().add(m_level.genLevelModule(new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_camera_batch)));
 		for(int i = 0; i < 3; ++i){
 			double position = m_level.peek().getPosition() + m_level.peek().getWidth();
-			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_batch)));
+			m_level.addAtEnd(m_level.genLevelModule(position, new LevelModuleDrawer(m_tile_set, m_tile_set_object, m_game_object_sprite, m_camera_batch)));
 		}
 
 		m_level.notifyChanges();
@@ -105,12 +120,30 @@ public class TheGame extends ApplicationAdapter {
 				new ParallaxLayer(bg2,new Vector2(0.1f,0.1f),new Vector2(0, 0)),
 		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150,0));
 
+		///////////////////////////INTERFACE
+		m_stomach_texture = new Texture(Gdx.files.internal("tileset/interface_sprite.png"));
+		m_stomach_sprite = new TileSet(m_stomach_texture, 256, 256);
+
+		m_pill_button_texture = new Texture(Gdx.files.internal("tileset/button-eat.png"));
+		m_pill_button_sprite = new TileSet(m_pill_button_texture, 128, 128);
+
+		m_pill_can_texture = new Texture(Gdx.files.internal("tileset/pill-can.png"));
+		m_pill_can_sprite = new TileSet(m_pill_can_texture, 64, 64);
+
+		m_pause_button_texture = new Texture(Gdx.files.internal("tileset/button-pause.png"));
+		m_pause_button_sprite = new TileSet(m_pause_button_texture, 64, 64);
+
+		m_player_interface_drawer = new PlayerInterfaceDrawer(m_stomach_sprite, m_pill_can_sprite, m_pill_button_sprite, m_pause_button_sprite, m_interface_batch);
 
 		///////////////////////////PLAYER
 		m_texturePlayerRun = new Texture(Gdx.files.internal("tileset/larry-run.png"));
 		m_texturePlayerJump = new Texture(Gdx.files.internal("tileset/larry-jump.png"));
 		m_playerDrawer = new PlayerDrawer(m_batch, m_texturePlayerRun, m_texturePlayerJump, m_tile_set.getWidth(), m_tile_set.getHeight());
 		m_player = new Player(m_playerDrawer);
+		
+		m_playerDrawer = new PlayerDrawer(m_camera_batch, m_texturePlayerRun, m_tile_set.getWidth(), m_tile_set.getHeight());
+
+		m_player = new Player(m_playerDrawer, m_player_interface_drawer);
 		m_playerController = new PlayerController(m_player);
 		m_player.notifyChanges();
 
@@ -140,7 +173,7 @@ public class TheGame extends ApplicationAdapter {
 
 
 		moveCamera(m_player.getPosition().x * 64, getCameraY());
-		m_batch.setProjectionMatrix(m_camera.combined);
+		m_camera_batch.setProjectionMatrix(m_camera.combined);
 
 		BitmapFont bitmapFont = new BitmapFont();
 		m_playerController.eventHandler();
@@ -160,6 +193,7 @@ public class TheGame extends ApplicationAdapter {
 
 		m_batch.begin();
 
+		m_camera_batch.begin();
 			///////////////////////////////LEVEL
 			m_level_drawer.draw();
 
@@ -179,8 +213,15 @@ public class TheGame extends ApplicationAdapter {
 
 			///////////////////////////////PLAYER
 			m_playerDrawer.draw();
+		m_camera_batch.end();
 
-		m_batch.end();
+		m_interface_batch.begin();
+//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
+//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
+
+			m_player_interface_drawer.draw();
+
+		m_interface_batch.end();
 
 
 	}
