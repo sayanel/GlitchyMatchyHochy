@@ -138,15 +138,8 @@ public class TheGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		//if(m_player.getPosition().y * 64 > GAME_HEIGHT - GAME_HEIGHT /3 ) m_move_camera_y =  CAMERA_HEIGHT / 2 + m_player.getPosition().y * 5;
-		//else if( m_move_camera_y < CAMERA_HEIGHT / 2) m_move_camera_y -=  m_player.getPosition().y *5;
-		//if( m_move_camera_y < CAMERA_HEIGHT / 2) m_move_camera_y = CAMERA_HEIGHT / 2;
-		if(m_player.getState() == Player.State.DOUBLEJUMP){
-			if(m_move_camera_y >= CAMERA_HEIGHT / 2) m_move_camera_y = m_player.getPosition().y * 64;
-		}
-		else m_move_camera_y = CAMERA_HEIGHT / 2;
 
-		moveCamera(m_player.getPosition().x * 64, m_move_camera_y);
+		moveCamera(m_player.getPosition().x * 64, getCameraY());
 		m_batch.setProjectionMatrix(m_camera.combined);
 
 		BitmapFont bitmapFont = new BitmapFont();
@@ -164,8 +157,6 @@ public class TheGame extends ApplicationAdapter {
 			m_background.draw(0.0f, 0);
 
 
-		///////////////////////////////////SOUND
-
 
 		m_batch.begin();
 
@@ -179,8 +170,8 @@ public class TheGame extends ApplicationAdapter {
 			bitmapFont.draw(m_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
 			//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
 			//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
-			//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64, 330);
-			//bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64, 310);
+			bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64 + 200, 330);
+			bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64 + 200, 310);
 			//bitmapFont.draw(m_batch, "m_fat_state : " + Double.toString(m_player.getFatState()), m_player.getPosition().x * 64, 290);
 			Player.State state = m_player.getState();
 			//bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
@@ -199,6 +190,20 @@ public class TheGame extends ApplicationAdapter {
 		m_texturePlayerRun.dispose();
 		m_texturePlayerJump.dispose();
 		m_player.dispose();
+	}
+
+
+	//////////////////////////////CAMERA FUNCTION
+
+	public float getCameraY(){
+		if(m_player.getState() == Player.State.DOUBLEJUMP){
+			float y_limit = CAMERA_HEIGHT - CAMERA_HEIGHT / 2;
+			if(m_move_camera_y * 64 >= y_limit) m_move_camera_y = m_player.getPosition().y * 64;
+			if(m_move_camera_y < CAMERA_HEIGHT / 2 ) m_move_camera_y = CAMERA_HEIGHT / 2;
+		}
+		else m_move_camera_y = CAMERA_HEIGHT / 2;
+
+		return m_move_camera_y;
 	}
 
 	public void moveCamera(float x, float y){
