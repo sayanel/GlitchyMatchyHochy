@@ -28,7 +28,7 @@ public class MainMenu extends ScreenAdapter {
         m_game_init = game_init;
 
         m_texture_menu = new Texture(Gdx.files.internal("screen/title-bg.png"));
-        m_playBounds = new Rectangle(0, 0, MainMenuScreen.GAME_WIDTH, MainMenuScreen.GAME_HEIGHT);
+        m_playBounds = new Rectangle(0, 0, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
         m_touchPos = new Vector3();
         m_batch_screen = new SpriteBatch();
     }
@@ -58,7 +58,7 @@ public class MainMenu extends ScreenAdapter {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         m_batch_screen.begin();
-        m_batch_screen.draw(m_texture_menu, 0, 0, MainMenuScreen.GAME_WIDTH, MainMenuScreen.GAME_HEIGHT);
+        m_batch_screen.draw(m_texture_menu, 0, 0, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
         m_batch_screen.end();
     }
 

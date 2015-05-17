@@ -26,10 +26,6 @@ public class TheGame extends ApplicationAdapter {
 
 	final GameInit m_game_init;
 
-	///////////////////////////CONSTANTS
-	public static final int GAME_WIDTH = 800;
-	public static final int GAME_HEIGHT = 480;
-
 	///////////////////////////BATCH
 	private SpriteBatch m_camera_batch;
 	private SpriteBatch m_interface_batch;
@@ -78,8 +74,8 @@ public class TheGame extends ApplicationAdapter {
 
 
 	////////////////////////CAMERA
-	private static final float CAMERA_WIDTH = (float) GAME_WIDTH;
-	private static final float CAMERA_HEIGHT = (float) GAME_HEIGHT;
+	private static final float CAMERA_WIDTH = (float) GameInit.GAME_WIDTH;
+	private static final float CAMERA_HEIGHT = (float) GameInit.GAME_HEIGHT;
 	float m_move_camera_y;
 	private OrthographicCamera m_camera;
 
@@ -129,7 +125,7 @@ public class TheGame extends ApplicationAdapter {
 		m_background = new ParallaxBackground(new ParallaxLayer[]{
 				new ParallaxLayer(sky, new Vector2(0.05f, 0.05f), new Vector2(0, 100), new Vector2(0, 0)),
 				new ParallaxLayer(buildings, new Vector2(0.1f, 0.1f), new Vector2(0, 0)),
-		}, GAME_WIDTH, GAME_HEIGHT, new Vector2(150, 0));
+		}, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT, new Vector2(150, 0));
 
 		///////////////////////////INTERFACE
 		m_stomach_texture = new Texture(Gdx.files.internal("tileset/stomach_sprite.png"));

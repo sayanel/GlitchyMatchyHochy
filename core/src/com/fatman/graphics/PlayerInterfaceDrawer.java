@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fatman.engine.Player;
+import com.fatman.screen.GameInit;
 import com.fatman.screen.TheGame;
 
 public class PlayerInterfaceDrawer implements Drawer{
@@ -77,13 +78,13 @@ public class PlayerInterfaceDrawer implements Drawer{
             //STOMACH
             m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setOrigin(0, 0);
             m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setScale(0.5f);
-            m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setPosition(TheGame.GAME_WIDTH - 128, TheGame.GAME_HEIGHT - 128 - 20);
+            m_stomach_sprite.getTile(((int) (m_weight * 0.1))).setPosition(GameInit.GAME_WIDTH - 128, GameInit.GAME_HEIGHT - 128 - 20);
             m_stomach_sprite.getTile(((int) (m_weight * 0.1))).draw(m_batch);
 
             //PAUSE BUTTON
             m_pause_button_sprite.getTile(0).setOrigin(0, 0);
             m_pause_button_sprite.getTile(0).setScale(1f);
-            m_pause_button_sprite.getTile(0).setPosition(20, TheGame.GAME_HEIGHT - 64 - 20);
+            m_pause_button_sprite.getTile(0).setPosition(20, GameInit.GAME_HEIGHT - 64 - 20);
             m_pause_button_sprite.getTile(0).draw(m_batch);
 
             //PILLS_BUTTON

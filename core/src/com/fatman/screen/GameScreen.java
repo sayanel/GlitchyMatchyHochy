@@ -12,9 +12,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.fatman.controller.PlayerController;
 import com.fatman.engine.Collision;
@@ -28,6 +28,8 @@ import java.util.ArrayList;
 public class GameScreen implements Screen {
 
     final GameInit m_game_init;
+
+    private Rectangle m_playBounds;
 
     //============================ ATTRIBUTES ============================//
 
@@ -101,6 +103,8 @@ public class GameScreen implements Screen {
     public GameScreen(GameInit game_init){
 
         m_game_init = game_init;
+
+        m_playBounds = new Rectangle(0, 0, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
 
         ///////////////////////////BATCH
         m_camera_batch = new SpriteBatch();
@@ -221,6 +225,12 @@ public class GameScreen implements Screen {
                 m_player_interface_drawer.draw();
             m_interface_batch.end();
 
+            if(m_player.getState() == Player.State.DEAD && Gdx.input.justTouched()){
+                if(m_playBounds.contains(Gdx.input.getX(), Gdx.input.getY())){
+                    m_global_sound.stop();
+                    m_game_init.setScreen(new MainMenu(m_game_init));
+                }
+            }
 
         }
         else{
@@ -254,6 +264,8 @@ public class GameScreen implements Screen {
     public void dispose() {
         m_texturePlayerRun.dispose();
         m_texturePlayerJump.dispose();
+        m_global_sound.stop();
+        m_global_sound.dispose();
     }
 
     //////////////////////////////CAMERA FUNCTION
