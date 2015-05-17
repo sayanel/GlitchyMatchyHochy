@@ -24,16 +24,16 @@ import java.util.ArrayList;
 
 public class TheGame extends ApplicationAdapter {
 
+	final GameInit m_game_init;
+
 	///////////////////////////CONSTANTS
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 480;
-
 
 	///////////////////////////BATCH
 	private SpriteBatch m_camera_batch;
 	private SpriteBatch m_interface_batch;
 	private SpriteBatch m_screen_batch;
-
 
 	///////////////////////////LEVEL
 	private Level m_level;
@@ -62,7 +62,6 @@ public class TheGame extends ApplicationAdapter {
 	///////////////////////////BACKGROUND
 	private ParallaxBackground m_background;
 
-
 	///////////////////////////PLAYER
 	private Player m_player;
 	private PlayerController m_playerController;
@@ -90,10 +89,15 @@ public class TheGame extends ApplicationAdapter {
 	///////////////////////////AUDIO
 	private Sound m_global_sound;
 
+	public TheGame(GameInit game_init){
+		m_game_init = game_init;
+	}
+	public TheGame(){
+		m_game_init = new GameInit();
+	}
 
 	@Override
 	public void create () {
-
 		///////////////////////////BATCH
 		m_camera_batch = new SpriteBatch();
 		m_interface_batch = new SpriteBatch();
@@ -192,6 +196,7 @@ public class TheGame extends ApplicationAdapter {
 
 		m_playerController.eventHandler();
 		m_player.update(m_playerController);
+
 		if(m_player.getPause() == 0){
 
 			moveCamera(m_player.getPosition().x * 64, getCameraY());
@@ -208,54 +213,27 @@ public class TheGame extends ApplicationAdapter {
 			if(m_player.getState() != Player.State.DEAD) {
 				m_background.draw(0.05f, m_player.getRun_delta() * 5000);
 			}
-			else
+			else{
 				m_background.draw(0.0f, 0);
-
+			}
 
 			m_camera_batch.begin();
-				///////////////////////////////LEVEL
 				m_level_drawer.draw();
-
-				//bitmapFont.draw(m_batch, "PlayerWorldPosition : " + Double.toString(m_player.getPosition().x), m_player.getPosition().x * 64, 350);
-				//bitmapFont.draw(m_batch, "PlayerGraphicPosition : " + Double.toString(m_player.getPosition().x * 64), m_player.getPosition().x * 64, 380);
-
-				//bitmapFont.draw(m_camera_batch, "Weight : " + Double.toString(m_player.getWeight()), m_player.getPosition().x * 64, 380);
-				//bitmapFont.draw(m_camera_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), m_player.getPosition().x * 64, 350);
-				//bitmapFont.draw(m_batch, "Speed : " + Double.toString(m_player.getVelocity().x), m_player.getPosition().x * 64, 430);
-				//bitmapFont.draw(m_batch, "bg speed : " + Double.toString(m_background.getSpeed().x), m_player.getPosition().x * 64, 410);
-				//bitmapFont.draw(m_batch, "Pos en y : " + Double.toString(m_player.getPosition().y * 64), m_player.getPosition().x * 64 + 200, 330);
-				//bitmapFont.draw(m_batch, "m_move_camera_y : " + Double.toString(m_move_camera_y), m_player.getPosition().x * 64 + 200, 310);
-				//bitmapFont.draw(m_batch, "m_fat_state : " + Double.toString(m_player.getFatState()), m_player.getPosition().x * 64, 290);
-				//Player.State state = m_player.getState();
-				//bitmapFont.draw(m_batch, "State : " + state, m_player.getPosition().x * 64, 450);
-				//bitmapFont.draw(m_camera_batch, "Score : " + Double.toString(m_score), m_player.getPosition().x * 64, 380);
-
-			///////////////////////////////PLAYER
 				m_playerDrawer.draw();
 			m_camera_batch.end();
 
 
-				m_interface_batch.begin();
-				//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
-				//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
-
+			m_interface_batch.begin();
 				m_player_interface_drawer.draw();
-
-				m_interface_batch.end();
+			m_interface_batch.end();
 
 
 		}
 		else{
 			m_interface_batch.begin();
-			//			bitmapFont.draw(m_interface_batch, "Weight : " + Double.toString(m_player.getWeight()), 300, 380);
-			//			bitmapFont.draw(m_interface_batch, "Pills : " + Double.toString(m_player.getPillsNumber()), 300, 350);
-
-			m_player_interface_drawer.draw();
-
+				m_player_interface_drawer.draw();
 			m_interface_batch.end();
 		}
-
-		
 
 	}
 
@@ -265,9 +243,7 @@ public class TheGame extends ApplicationAdapter {
 		m_texturePlayerJump.dispose();
 	}
 
-
 	//////////////////////////////CAMERA FUNCTION
-
 	public float getCameraY(){
 		if(m_player.getState() == Player.State.DOUBLEJUMP){
 			float y_limit = CAMERA_HEIGHT - CAMERA_HEIGHT / 2;

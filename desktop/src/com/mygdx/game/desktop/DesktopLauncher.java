@@ -2,6 +2,7 @@ package com.mygdx.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.fatman.screen.GameInit;
 import com.fatman.screen.TheGame;
 
 public class DesktopLauncher {
@@ -10,6 +11,6 @@ public class DesktopLauncher {
 		config.width = 800;
 		config.height = 480;
 		//new LwjglApplication(new MainMenuScreen(), config);
-		new LwjglApplication(new TheGame(), config);
+		new LwjglApplication(new GameInit(), config);
 	}
 }

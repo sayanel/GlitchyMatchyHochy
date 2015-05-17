@@ -69,7 +69,6 @@ public class PlayerInterfaceDrawer implements Drawer{
 
         if(is_game_over){
             m_game_over_bg.draw(m_batch);
-
         }
         else if(is_paused){
             m_pause_bg.draw(m_batch);
