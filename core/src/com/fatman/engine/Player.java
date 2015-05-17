@@ -121,7 +121,7 @@ public class Player implements Drawable, Controllable {
         ///////////SOUND
         m_prout_sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/PROUT01.wav"));
         m_prout_sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/PROUT02.wav"));
-        m_pills_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Blip_Select.wav"));
+        m_pills_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Pickup_Coin.wav"));
         m_miam_sound = Gdx.audio.newSound(Gdx.files.internal("audio/Randomize.wav"));
         m_miam_burger_sound = Gdx.audio.newSound(Gdx.files.internal("audio/EAT_BURGER01.wav"));
         m_miam_pills_sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/EAT_PILL01.wav"));
@@ -174,7 +174,7 @@ public class Player implements Drawable, Controllable {
         else m_prout_sound2.play(1.0f);
     }
     public void playPillsSound(){
-        //m_pills_sound.play(1.0f);
+        m_pills_sound.play(0.05f);
     }
     public void playerMiamSound(){
         m_miam_sound.play(1.0f);

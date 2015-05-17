@@ -88,6 +88,7 @@ public class Collision {
                 if(playerBounds.overlaps(objectPatternBound) && module.getObjectPattern().getData()[i][j] > 0) {
                     listOfObject.add(module.getObjectPattern().getData()[i][j]); //On a touché ce qu'il y avait en (i,j) donc on l'ajoute
                     module.getObjectPattern().setData(i, j, 0); //Puisque on a touché ce qu'il y avait en i,j, on met sa valeur à 0 (=rien)
+                    player.playPillsSound();
                 }
             }
         }

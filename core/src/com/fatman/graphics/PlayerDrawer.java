@@ -154,8 +154,6 @@ public class PlayerDrawer implements Drawer {
 
     //DRAWER METHODS
     public void draw() {
-
-
         if(m_state == Player.State.RUNNING){
             m_elapsedTime += Gdx.graphics.getDeltaTime()/1;
             drawPlayerRun();
@@ -173,8 +171,6 @@ public class PlayerDrawer implements Drawer {
 
         if(m_state == Player.State.DEAD){
             m_elapsedTime += Gdx.graphics.getDeltaTime()/2;
-            System.out.println(m_elapsedTime);
-           // if(m_isAlreadyDead < 65) drawPlayerDie();
             if(m_isAlreadyDead < 26) drawPlayerDie();
             else drawDeadPlayer();
         }

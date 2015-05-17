@@ -7,13 +7,23 @@
 
 package com.fatman.screen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 public class GameInit extends Game {
 
-    public static final int GAME_WIDTH = 800;
-    public static final int GAME_HEIGHT = 480;
+    public static int WINDOW_WIDTH;
+    public static int WINDOW_HEIGHT;
+
+    public static int GAME_WIDTH;
+    public static int GAME_HEIGHT;
 
     public void create() {
+        WINDOW_WIDTH = Gdx.app.getGraphics().getWidth();
+        WINDOW_HEIGHT = Gdx.app.getGraphics().getHeight();
+
+        GAME_WIDTH = 800;
+        GAME_HEIGHT = 480;
+
         this.setScreen(new MainMenu(this));
     }
 

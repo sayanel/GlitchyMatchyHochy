@@ -33,14 +33,9 @@ public class GameScreen implements Screen {
 
     //============================ ATTRIBUTES ============================//
 
-    ///////////////////////////CONSTANTS
-    public static final int GAME_WIDTH = 800;
-    public static final int GAME_HEIGHT = 480;
-
     ///////////////////////////BATCH
     private SpriteBatch m_camera_batch;
     private SpriteBatch m_interface_batch;
-    private SpriteBatch m_screen_batch;
 
     ///////////////////////////LEVEL
     private Level m_level;
@@ -85,10 +80,9 @@ public class GameScreen implements Screen {
 
 
     ////////////////////////CAMERA
-    private static final float CAMERA_WIDTH = (float) GAME_WIDTH;
-    private static final float CAMERA_HEIGHT = (float) GAME_HEIGHT;
     float m_move_camera_y;
     private OrthographicCamera m_camera;
+    private OrthographicCamera m_interface_camera;
 
     ///////////////////////////COLLISION
     private Collision col;
@@ -104,7 +98,7 @@ public class GameScreen implements Screen {
 
         m_game_init = game_init;
 
-        m_playBounds = new Rectangle(0, 0, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
+        m_playBounds = new Rectangle(0, 0, GameInit.WINDOW_WIDTH, GameInit.WINDOW_HEIGHT);
 
         ///////////////////////////BATCH
         m_camera_batch = new SpriteBatch();
@@ -137,7 +131,7 @@ public class GameScreen implements Screen {
         m_background = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(sky, new Vector2(0.05f, 0.05f), new Vector2(0, 100), new Vector2(0, 0)),
                 new ParallaxLayer(buildings, new Vector2(0.1f, 0.1f), new Vector2(0, 0)),
-        }, GAME_WIDTH, GAME_HEIGHT, new Vector2(150, 0));
+        }, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT, new Vector2(150, 0));
 
         ///////////////////////////INTERFACE
         m_stomach_texture = new Texture(Gdx.files.internal("tileset/stomach_sprite.png"));
@@ -171,10 +165,16 @@ public class GameScreen implements Screen {
         m_player.notifyChanges();
 
         ///////////////////////////CAMERA
-        this.m_camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-        this.m_camera.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT);
-        this.m_camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, m_player.getPosition().x * 64);
-        this.m_move_camera_y = CAMERA_HEIGHT / 2;
+        //Game Camera
+        m_camera = new OrthographicCamera(GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
+        m_camera.setToOrtho(false, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
+        m_camera.position.set(GameInit.GAME_WIDTH / 2f, GameInit.GAME_HEIGHT / 2f, m_player.getPosition().x * 64);
+        m_move_camera_y = GameInit.GAME_HEIGHT / 2;
+
+        //Interface Camera
+        m_interface_camera = new OrthographicCamera(GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
+        m_interface_camera.setToOrtho(false, GameInit.GAME_WIDTH, GameInit.GAME_HEIGHT);
+        m_interface_batch.setProjectionMatrix(m_interface_camera.combined);
 
 
         ///////////////////////////COLLISION
@@ -220,7 +220,6 @@ public class GameScreen implements Screen {
                 m_playerDrawer.draw();
             m_camera_batch.end();
 
-
             m_interface_batch.begin();
                 m_player_interface_drawer.draw();
             m_interface_batch.end();
@@ -228,10 +227,10 @@ public class GameScreen implements Screen {
             if(m_player.getState() == Player.State.DEAD && Gdx.input.justTouched()){
                 if(m_playBounds.contains(Gdx.input.getX(), Gdx.input.getY())){
                     m_global_sound.stop();
+                    dispose();
                     m_game_init.setScreen(new MainMenu(m_game_init));
                 }
             }
-
         }
         else{
             m_interface_batch.begin();
@@ -271,17 +270,17 @@ public class GameScreen implements Screen {
     //////////////////////////////CAMERA FUNCTION
     public float getCameraY(){
         if(m_player.getState() == Player.State.DOUBLEJUMP){
-            float y_limit = CAMERA_HEIGHT - CAMERA_HEIGHT / 2;
+            float y_limit = GameInit.GAME_HEIGHT - GameInit.GAME_HEIGHT / 2;
             if(m_move_camera_y * 64 >= y_limit) m_move_camera_y = m_player.getPosition().y * 64;
-            if(m_move_camera_y < CAMERA_HEIGHT / 2 ) m_move_camera_y = CAMERA_HEIGHT / 2;
+            if(m_move_camera_y < GameInit.GAME_HEIGHT / 2 ) m_move_camera_y = GameInit.GAME_HEIGHT / 2;
         }
-        else m_move_camera_y = CAMERA_HEIGHT / 2;
+        else m_move_camera_y = GameInit.GAME_HEIGHT / 2;
 
         return m_move_camera_y;
     }
 
     public void moveCamera(float x, float y){
-        m_camera.position.set(x + CAMERA_WIDTH/2 - 200, y, 0);
+        m_camera.position.set(x + GameInit.GAME_WIDTH/2 - 200, y, 0);
         m_camera.update();
     }
 

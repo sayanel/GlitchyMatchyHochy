@@ -103,7 +103,7 @@ public class PlayerInterfaceDrawer implements Drawer{
             m_bitmap_font.drawWrapped(m_batch, "x " + m_pills_number, 20 + 32 + 5, 128 + 28 - 5, 0f);
 
             //SCORE
-            m_bitmap_font.drawWrapped(m_batch, "Score: " + m_score, 300, 460, 0f);
+            m_bitmap_font.drawWrapped(m_batch, "Score: " + m_score, GameInit.GAME_WIDTH * 0.5f - 65, GameInit.GAME_HEIGHT - 30, 0f);
         }
     }
 
