@@ -8,12 +8,14 @@
 package com.fatman.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 
 public class MainMenu extends ScreenAdapter {
 
@@ -25,6 +27,8 @@ public class MainMenu extends ScreenAdapter {
     private Texture m_texture_menu;
     private SpriteBatch m_batch_screen;
 
+    private Sound m_title_sound;
+
     public MainMenu(GameInit game_init) {
         m_game_init = game_init;
 
@@ -34,13 +38,24 @@ public class MainMenu extends ScreenAdapter {
         m_touchPos = new Vector3();
         m_batch_screen = new SpriteBatch();
 
+        m_title_sound = Gdx.audio.newSound(Gdx.files.internal("audio/BIG_LARRY.wav"));
+
     }
 
     public void update () {
         if (Gdx.input.justTouched()) {
             m_touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             if (m_playBounds.contains(m_touchPos.x, m_touchPos.y)) {
-                m_game_init.setScreen(new GameScreen(m_game_init));
+
+                m_title_sound.play(1.0f);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        m_game_init.setScreen(new GameScreen(m_game_init));
+                    }
+                }, 0.7f);
+
+
             }
         }
     }
